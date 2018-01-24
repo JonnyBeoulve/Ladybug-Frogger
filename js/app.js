@@ -1,4 +1,11 @@
-// Enemies our player must avoid
+/*=======================================================================
+// Constants.
+=======================================================================*/
+
+
+/*=======================================================================
+// Enemies.
+=======================================================================*/
 var Enemy = function() {
     // Variables applied to each of our instances go here
 
@@ -7,31 +14,51 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/*=======================================================================
+// This class defines the Enemy characters in the game.
+// Note: dt is a time delta between ticks.
+=======================================================================*/
 Enemy.prototype.update = function(dt) {
     // Multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // everyone who plays.
+
 };
 
-// Draw the enemy on the screen
+/*=======================================================================
+// This function will render the Enemies on the screen.
+=======================================================================*/
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// This is the player class.
-// This class will require an update(), render() and
-// a handleInput() method.
+/*=======================================================================
+// Player class
+=======================================================================*/
+class Player {
+    update() {
 
+    }
 
-// Instantiate the objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+    render() {
 
+    }
 
-// This listens for key presses and sends the keys to the
-// Player.handleInput() method.
+    handleInput() {
+
+    }
+}
+
+/*=======================================================================
+// Object instantiation.
+=======================================================================*/
+var allEnemies = [];
+var player = Player;
+
+/*=======================================================================
+// This player input listener binds the arrow keys on the keyboard to
+// move the Player character.
+=======================================================================*/
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
