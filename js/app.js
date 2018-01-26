@@ -1,28 +1,19 @@
 /*=======================================================================
-// Constants.
-=======================================================================*/
-
-
-/*=======================================================================
-// Enemies.
+// The enemy object.
 =======================================================================*/
 var Enemy = function() {
-    // Variables applied to each of our instances go here
-
-    // The image/sprite for our enemies, this uses
-    // a helper
+    this.x = 0;
+    this.y = 0;
+    this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
 };
 
 /*=======================================================================
-// This class defines the Enemy characters in the game.
+// This function updates the location of the enemy characters.
 // Note: dt is a time delta between ticks.
 =======================================================================*/
 Enemy.prototype.update = function(dt) {
-    // Multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // everyone who plays.
-
+    this.x = this.x + this.speed * dt;
 };
 
 /*=======================================================================
@@ -33,19 +24,52 @@ Enemy.prototype.render = function() {
 };
 
 /*=======================================================================
-// Player class
+// The Player object.
 =======================================================================*/
-class Player {
-    update() {
+var Player = function() {
+    this.x = 200;
+    this.y = 380;
+    this.score = 0;
+    this.sprite = 'images/char-boy.png';
+}
 
-    }
+/*=======================================================================
+// Render the player sprite.
+=======================================================================*/
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
-    render() {
+/*=======================================================================
+// Update the location of the player sprite.
+=======================================================================*/
+Player.prototype.update = function() {
+    this.x = this.x;
+    this.y = this.y;
+}
 
-    }
+/*=======================================================================
+// Handle keyboard inputs by the user to move in a 4-directional plane.
+// Conditions are included to prevent the player from leaving the grid.
+=======================================================================*/
+Player.prototype.handleInput = function(key) {
 
-    handleInput() {
-
+    if (key === 'left') {
+        if (this.x > 0) {
+            this.x = this.x - 100;
+        }
+    } else if (key === 'up') {
+        if (this.y > 0) {
+            this.y = this.y - 80;
+        }
+    } else if (key === 'right') {
+        if (this.x < 400) {
+            this.x = this.x + 100;
+        }
+    } else if (key === 'down') {
+        if (this.y < 380) {
+            this.y = this.y + 80;
+        }
     }
 }
 
@@ -53,10 +77,10 @@ class Player {
 // Object instantiation.
 =======================================================================*/
 var allEnemies = [];
-var player = Player;
+var player = new Player();
 
 /*=======================================================================
-// This player input listener binds the arrow keys on the keyboard to
+// An input listener binds the arrow keys on the keyboard to
 // move the Player character.
 =======================================================================*/
 document.addEventListener('keyup', function(e) {
