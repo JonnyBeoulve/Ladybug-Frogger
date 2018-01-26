@@ -5,7 +5,9 @@ This is an in-development object-oriented JavaScript project that will allow use
 Open index.html to get started. You can use your keyboard's arrow keys to move the player character.
 
 ## Note
-This is currently in development. Elements yet to be implemented:
+This is currently in development. The main programming I have contributed can be found in js/app.js. Engine.js and Resources.js are engine files that the game is built on.
+
+Elements yet to be implemented:
 
 * Moving enemies.
 * A scoreboard.
