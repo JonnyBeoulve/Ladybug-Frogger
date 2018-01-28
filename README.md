@@ -7,9 +7,8 @@ Open index.html to get started. You can use your keyboard's arrow keys to move t
 ## Note
 This is currently in development. The main programming I have contributed can be found in js/app.js. Engine.js and Resources.js are engine files that the game is built on.
 
-Elements yet to be implemented:
+Elements to soon be implemented:
 
-* Moving enemies.
-* A scoreboard.
-* Failure conditions.
-* Success conditions.
+** Hearts and Stars at the top to indicate player health and points.
+** Randomized rock locations in the water to make the game more challenging.
+** A victory menu.
