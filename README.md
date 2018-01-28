@@ -9,6 +9,6 @@ This is currently in development. The main programming I have contributed can be
 
 Elements to soon be implemented:
 
-** Hearts and Stars at the top to indicate player health and points.
-** Randomized rock locations in the water to make the game more challenging.
-** A victory menu.
+* Hearts and Stars at the top to indicate player health and points.
+* Randomized rock locations in the water to make the game more challenging.
+* A victory menu.
