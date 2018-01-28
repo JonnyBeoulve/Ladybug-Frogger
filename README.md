@@ -13,4 +13,4 @@ Elements to soon be implemented:
 
 * Randomized rock locations in the water to make the game more challenging.
 * Power ups that randomly spawn in the game field.
-* Improvements to visual style of the modals.
+* Improvements to the visual style of the modals.
