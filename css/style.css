@@ -1,3 +1,112 @@
 body {
     text-align: center;
+    font-family: helvetica;
+}
+
+/*=======================================================================
+// Styling for the menu button.
+=======================================================================*/
+.info-btn {
+    display: block;
+    position: absolute;
+    top: 600px;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    left: 0;
+    right: 0;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    background-color: hsl(181, 93%, 33%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.info-btn:hover {
+    background-color:red;
+}
+
+/*=======================================================================
+// Styling for the Hearts indicating Player health.
+=======================================================================*/
+.hearts {
+    display: block;
+    position: absolute;
+    top: 20px;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    width: 100%;
+    left: -320px;
+    right: 0;
+}
+
+/*=======================================================================
+// Styling for the Stars indicating Player points.
+=======================================================================*/
+.stars {
+    display: block;
+    position: absolute;
+    top: 20px;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    width: 100%;
+    left: 160px;
+    right: 0;
+}
+
+/*=======================================================================
+Styling for the modal window.
+=======================================================================*/
+#modal {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60px;
+    width: 320px;
+    height: 330px;
+    background: rgb(250, 252, 255);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    border-radius: 5px;
+    border: 2px solid #b1b1b1;
+    border-style: ridge;
+    margin-top: 80px;
+}
+
+.modal-close {
+    margin-top: 2px;
+    margin-left: 290px;
+    border: none;
+    background: rgb(250, 252, 255);
+}
+
+.modal-close:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.modal-header {
+    text-transform: capitalize;
+    color: hsl(181, 93%, 33%);
+    font-size: 1.1em;
+    width: 280px;
+}
+
+.modal-text {
+    color: rgb(39, 39, 39);
+    font-size: 1em;
+    width: 280px;
+}
+
+.no-hover {
+    pointer-events: none;
+}
+
+.employees-blur {
+    filter: blur(2px);
 }
