@@ -4,20 +4,18 @@ body {
 }
 
 /*=======================================================================
-// Styling for the menu button.
+// Styling for the menu buttons.
 =======================================================================*/
-.info-btn {
+.menu-btn {
     display: block;
     position: absolute;
     top: 600px;
     text-align: center;
     margin: 0px auto 0px auto;
-    left: 0;
-    right: 0;
     width: 60px;
     height: 40px;
     line-height: 40px;
-    background-color: hsl(181, 93%, 33%);
+    background-color: hsl(138, 100%, 29%);
     color: white;
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -25,35 +23,22 @@ body {
     cursor: pointer;
 }
 
-.info-btn:hover {
+.menu-btn:hover {
     background-color:red;
 }
 
-/*=======================================================================
-// Styling for the Hearts indicating Player health.
-=======================================================================*/
-.hearts {
-    display: block;
-    position: absolute;
-    top: 20px;
-    text-align: center;
-    margin: 0px auto 0px auto;
-    width: 100%;
-    left: -320px;
-    right: 0;
+.menu-easier {
+    left: 180px;
+    right: 0px;
 }
 
-/*=======================================================================
-// Styling for the Stars indicating Player points.
-=======================================================================*/
-.stars {
-    display: block;
-    position: absolute;
-    top: 20px;
-    text-align: center;
-    margin: 0px auto 0px auto;
-    width: 100%;
-    left: 160px;
+.menu-harder {
+    left: 310px;
+    right: 0px;
+}
+
+.menu-info {
+    left: 440px;
     right: 0;
 }
 
@@ -79,8 +64,9 @@ Styling for the modal window.
 }
 
 .modal-close {
-    margin-top: 2px;
+    margin-top: 5px;
     margin-left: 290px;
+    font-size: 1.2em;
     border: none;
     background: rgb(250, 252, 255);
 }
@@ -90,17 +76,42 @@ Styling for the modal window.
     cursor: pointer;
 }
 
+.modal-victory {
+    text-transform: capitalize;
+    color: hsl(138, 100%, 29%);
+    font-size: 6em;
+    text-align: center;
+    width: 280px;
+    margin: 5px 5px 5px 5px;
+}
+
+.modal-new-game {
+    line-height: 40px;
+    background-color: hsl(138, 100%, 29%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-new-game:hover {
+    background-color:red;
+}
+
 .modal-header {
     text-transform: capitalize;
-    color: hsl(181, 93%, 33%);
-    font-size: 1.1em;
+    color: hsl(138, 100%, 29%);
+    font-size: 1.3em;
     width: 280px;
+    margin: 5px 5px 5px 5px;
 }
 
 .modal-text {
     color: rgb(39, 39, 39);
-    font-size: 1em;
+    font-size: 1.1em;
     width: 280px;
+    margin: 5px 5px 5px 5px;
 }
 
 .no-hover {

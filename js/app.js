@@ -1,9 +1,9 @@
 /*=======================================================================
 // The enemy object.
 =======================================================================*/
-var Enemy = function(x_loc, row_loc, speed) {
-    this.x = x_loc;
-    this.y = 60 + ((row_loc - 1) * 80);
+var Enemy = function(xLoc, rowLoc, speed) {
+    this.x = xLoc;
+    this.y = 60 + ((rowLoc - 1) * 80);
     this.speed = speed / 2;
     this.sprite = 'images/enemy-bug.png';
 };
@@ -37,8 +37,6 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.x = 200;
     this.y = 380;
-    this.points = 0;
-    this.lives = 3;
     this.spriteIndex = 0;
     this.sprite = this.SPRITE_FILES[this.spriteIndex];
 }
@@ -80,7 +78,11 @@ Player.prototype.update = function() {
 Player.prototype.death = function() {
     this.x = 200
     this.y = 380;
-    this.lives = this.lives - 1;
+    stats.lives = stats.lives - 1;
+
+    if(stats.lives === 0) {
+        stats.endGame('gameover');
+    }
 }
 
 /*=======================================================================
@@ -117,42 +119,6 @@ Player.prototype.handleInput = function(key) {
 }
 
 /*=======================================================================
-// The Stats object.
-=======================================================================*/
-var Stats = function() {
-    this.points = 0;
-}
-
-/*=======================================================================
-// Upon reaching the water the player will be reset and given a point.
-=======================================================================*/
-Stats.prototype.score = function() {
-    player.x = 200
-    player.y = 380;
-
-    this.points++;
-
-    if (this.points === 3) {
-        console.log("YOU WIN!");
-    }
-}
-
-/*=======================================================================
-// Instantiate seven Enemy, one Player, and one Stats object.
-=======================================================================*/
-var allEnemies = [];
-
-for (var i = 0; i < 9; i++) {
-    var random_x_loc = Math.floor(Math.random() * (1000)) + 1;
-    var random_row_loc = Math.floor(Math.random() * (3)) + 1;
-    var random_speed = Math.floor(Math.random() * (100)) * 5;
-    allEnemies.push(new Enemy(random_x_loc, random_row_loc, random_speed));
-}
-
-var player = new Player();
-var stats = new Stats();
-
-/*=======================================================================
 // An input listener binds the arrow keys on the keyboard to
 // move the Player character.
 =======================================================================*/
@@ -169,21 +135,197 @@ document.addEventListener('keyup', function(e) {
 });
 
 /*=======================================================================
-// A div will be created for the info modal which will display
-// application information upon clicking the info button.
+// The Stats object.
+=======================================================================*/
+var Stats = function() {
+    this.lives = 3;
+    this.points = 0;
+    this.heartSprite = 'images/heart.png';
+    this.starSprite = 'images/star.png';
+}
+
+/*=======================================================================
+// Upon reaching the water the player will be reset and given a point.
+// If the player has achieved 3 points then a victory screen will
+// be displayed with the option to start a new game.
+=======================================================================*/
+Stats.prototype.score = function() {
+    player.x = 200
+    player.y = 380;
+
+    this.points++;
+    this.render();
+
+    if (this.points === 3) {
+        this.endGame('win');
+    }
+}
+
+/*=======================================================================
+// An end game screen that functions as both the failure and victory
+// screen depending on the string passed into the function.
+=======================================================================*/
+Stats.prototype.endGame = function(e) {
+
+    /*=======================================================================
+    // Clear grid.
+    =======================================================================*/
+    allEnemies.forEach(function(e) {
+        allEnemies.splice(0, allEnemies.length);
+    })
+
+    /*=======================================================================
+    // Clear modal before adding text.
+    =======================================================================*/
+    while(modalDiv.firstChild) {
+        modalDiv.removeChild(modalDiv.firstChild);
+    }
+
+    /*=======================================================================
+    // Prepare text depending on if the user won or lost.
+    =======================================================================*/
+    modalDiv.style.display = '';
+    let modalVictoryHeader = document.createElement('h2');
+    modalVictoryHeader.classList.add('modal-victory');
+
+    if(e == 'win') {
+        modalVictoryHeader.textContent = 'You Win!';
+    } else {
+        modalVictoryHeader.textContent = 'Game Over.';
+    }
+
+    /*=======================================================================
+    // Create Start New Game button.
+    =======================================================================*/
+    let modalNewGameBtn = document.createElement('button');
+    modalNewGameBtn.innerHTML = 'Start New Game';
+    modalNewGameBtn.classList.add('modal-new-game');
+
+    /*=======================================================================
+    // Append elements, including the close button, to the modal.
+    =======================================================================*/
+    modalDiv.appendChild(modalVictoryHeader);
+    modalDiv.appendChild(modalNewGameBtn);
+
+    /*=======================================================================
+    // Create event listener for the close button
+    =======================================================================*/
+    modalNewGameBtn.addEventListener('click', () => {
+        while(modalDiv.firstChild) {
+            modalDiv.removeChild(modalDiv.firstChild);
+          }
+        modalDiv.style.display = 'none';
+        this.newGame();
+    })
+}
+
+/*=======================================================================
+// A new game is started upon clicking the Start New Game button.
+=======================================================================*/
+Stats.prototype.newGame = function() {
+    this.lives = 3;
+    this.points = 0;
+    player.x = 200;
+    player.y = 380;
+
+    for (var i = 0; i < 9; i++) {
+        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
+        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
+        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+    }
+}
+
+/*=======================================================================
+// This function will display hearts and stars on the top of the screen
+// to indicate player lives and points.
+=======================================================================*/
+Stats.prototype.render = function() {
+    var heartXLoc = 0;
+    var heartYLoc = -10;
+    var starXLoc = 470;
+    var starYLoc = -10;
+
+    for (var i = this.lives; i > 0; i--) {
+        ctx.drawImage(Resources.get(this.heartSprite), heartXLoc, heartYLoc);
+        heartXLoc = heartXLoc + 40;
+    }
+    for (var k = this.points; k > 0; k--) {
+        ctx.drawImage(Resources.get(this.starSprite), starXLoc, starYLoc);
+        starXLoc = starXLoc - 40;
+    }
+}
+
+/*=======================================================================
+// Instantiate seven Enemy, one Player, and one Stats object.
+=======================================================================*/
+var allEnemies = [];
+
+for (var i = 0; i < 9; i++) {
+    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+    var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
+    var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+    allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+}
+
+var player = new Player();
+var stats = new Stats();
+
+/*=======================================================================
+// An event listener that removes one Enemy upon clicking the Easier
+// button.
+=======================================================================*/
+var easier = document.getElementsByClassName("menu-easier")[0];
+easier.addEventListener("click", function(e) {
+    if (allEnemies.length > 0) {
+        allEnemies.splice(allEnemies.length - 1);
+    }
+})
+
+/*=======================================================================
+// An event listener that adds one Enemy upon clicking the Harder
+// button.
+=======================================================================*/
+var harder = document.getElementsByClassName("menu-harder")[0];
+harder.addEventListener("click", function(e) {
+    if (allEnemies.length < 20) {
+        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
+        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
+        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+    }
+})
+
+/*=======================================================================
+// A div will be created to display text within the game area.
 =======================================================================*/
 var modalDiv = document.getElementById('modal');
 modalDiv.style.display = 'none';
 
-var info = document.getElementsByClassName("info-btn")[0];
-info.addEventListener("click", function(e){
+/*=======================================================================
+// Display application Info within the modal upon clicking the Info
+// button.
+=======================================================================*/
+var info = document.getElementsByClassName("menu-info")[0];
+info.addEventListener("click", function(e) {
+
+    /*=======================================================================
+    // Clear modal before adding info text.
+    =======================================================================*/
+    while(modalDiv.firstChild) {
+        modalDiv.removeChild(modalDiv.firstChild);
+    }
+
+    /*=======================================================================
+    // Prepare text to be added to modal.
+    =======================================================================*/
     modalDiv.style.display = '';
     let modalInstructionsHeader = document.createElement('h2');
     modalInstructionsHeader.classList.add('modal-header');
     modalInstructionsHeader.textContent = 'Instructions';
     let modalControls = document.createElement('p');
     modalControls.classList.add('modal-text');
-    modalControls.textContent = 'Arrow Keys to move. C to change character.';
+    modalControls.textContent = 'Use Arrow Keys to move. Press C to change character.';
     let modalInstructions = document.createElement('p');
     modalInstructions.classList.add('modal-text');
     modalInstructions.textContent = 'Your goal is to navigate across the grid to the water on top while avoiding deadly ladybugs.';
@@ -193,6 +335,9 @@ info.addEventListener("click", function(e){
     let modalAboutText = document.createElement('p');
     modalAboutText.classList.add('modal-text');
     modalAboutText.textContent = 'This program was made by Jonathan Leack using JavaScript.';
+    let modalAboutText2 = document.createElement('p');
+    modalAboutText2.classList.add('modal-text');
+    modalAboutText2.textContent = 'www.JonathanLeack.com';
 
     /*=======================================================================
     // Create close button for closing the modal window.
@@ -210,6 +355,7 @@ info.addEventListener("click", function(e){
     modalDiv.appendChild(modalInstructions);
     modalDiv.appendChild(modalAboutHeader);
     modalDiv.appendChild(modalAboutText);
+    modalDiv.appendChild(modalAboutText2);
 
     /*=======================================================================
     // Create event listener for the close button
