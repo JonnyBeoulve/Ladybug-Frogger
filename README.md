@@ -11,6 +11,5 @@ This game is currently in development. The main programming I have contributed c
 
 Elements to soon be implemented:
 
-* Randomized rock locations in the water to make the game more challenging.
 * Power ups that randomly spawn in the game field.
-* Improvements to the visual style of the modals.
+* Visual feedback when moving into a rock or earning a point.
