@@ -154,6 +154,11 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
+
         stats.render();
     }
 
@@ -180,7 +185,8 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/heart.png',
-        'images/star.png'
+        'images/star.png',
+        'images/rock.png'
     ]);
     Resources.onReady(init);
 

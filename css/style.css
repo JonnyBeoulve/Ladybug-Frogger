@@ -1,6 +1,11 @@
 body {
     text-align: center;
     font-family: helvetica;
+    background-color: #fff; 
+    background-image: 
+        linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+        linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 1.2em;
 }
 
 /*=======================================================================
@@ -53,7 +58,7 @@ Styling for the modal window.
     top: 60px;
     width: 320px;
     height: 330px;
-    background: rgb(250, 252, 255);
+    background: hsla(139, 21%, 73%, 0.945);
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -67,8 +72,8 @@ Styling for the modal window.
     margin-top: 5px;
     margin-left: 290px;
     font-size: 1.2em;
+    background-color: hsla(139, 21%, 73%, 0.945);
     border: none;
-    background: rgb(250, 252, 255);
 }
 
 .modal-close:hover {
@@ -87,6 +92,7 @@ Styling for the modal window.
 
 .modal-new-game {
     line-height: 40px;
+    margin: 25px;
     background-color: hsl(138, 100%, 29%);
     color: white;
     border: none;

@@ -88,6 +88,8 @@ Player.prototype.death = function() {
 /*=======================================================================
 // Handle keyboard inputs by the user to move in a 4-directional plane.
 // Conditions are included to prevent the player from leaving the grid.
+// If the player tries to move into a rock then the movement will be
+// prevented.
 =======================================================================*/
 Player.prototype.handleInput = function(key) {
 
@@ -97,6 +99,13 @@ Player.prototype.handleInput = function(key) {
         }
     } else if (key === 'up') {
         if (this.y > 0) {
+            if (this.y === 60) {
+                for (var i = 0; i < 4; i++) {
+                    if (allRocks[i].x === this.x) {
+                        return;
+                    }
+                }
+            }
             this.y = this.y - 80;
         }
     } else if (key === 'right') {
@@ -119,20 +128,20 @@ Player.prototype.handleInput = function(key) {
 }
 
 /*=======================================================================
-// An input listener binds the arrow keys on the keyboard to
-// move the Player character.
+// The Rock object.
 =======================================================================*/
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        67: 'changesprite'
-    };
+var Rock = function(rowLoc, colLoc) {
+    this.x = ((rowLoc) * 100) - 100;
+    this.y = colLoc;
+    this.sprite = 'images/rock.png';
+}
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+/*=======================================================================
+// Render the rock sprite on four of the five water spaces.
+=======================================================================*/
+Rock.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
 /*=======================================================================
 // The Stats object.
@@ -257,15 +266,22 @@ Stats.prototype.render = function() {
 }
 
 /*=======================================================================
-// Instantiate seven Enemy, one Player, and one Stats object.
+// Instantiate 10 Enemy, one Player, four Rocks, and one Stats object.
 =======================================================================*/
 var allEnemies = [];
 
-for (var i = 0; i < 9; i++) {
+for (var i = 0; i < 10; i++) {
     var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
     var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
     var randomSpeed = Math.floor(Math.random() * (150)) + 120;
     allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+}
+
+var allRocks = [];
+
+for (var i = 0; i < 4; i++) {
+    var randomColLoc = Math.floor(Math.random() * (5)) + 1;
+    allRocks.push(new Rock(randomColLoc, -20));
 }
 
 var player = new Player();
@@ -375,3 +391,19 @@ function closeModal() {
       modalDiv.removeChild(modalDiv.firstChild);
     }
   }
+
+/*=======================================================================
+// An input listener binds the arrow keys on the keyboard to
+// move the Player character.
+=======================================================================*/
+document.addEventListener('keyup', function(e) {
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        67: 'changesprite'
+    };
+
+    player.handleInput(allowedKeys[e.keyCode]);
+});
