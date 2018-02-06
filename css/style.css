@@ -48,6 +48,32 @@ body {
 }
 
 /*=======================================================================
+Styling for temporary alerts.
+=======================================================================*/
+#alert {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 320px;
+    width: 240px;
+    height: 60px;
+    background: rgba(255, 0, 0, 0.664);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #b1b1b1;
+    border-style: ridge;
+    margin-top: 80px;
+}
+
+#alert h3 {
+    text-transform: capitalize;
+    color: white;
+}
+
+/*=======================================================================
 Styling for the modal window.
 =======================================================================*/
 #modal {

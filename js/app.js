@@ -66,6 +66,7 @@ Player.prototype.render = function() {
 Player.prototype.update = function() {
     this.x = this.x;
     this.y = this.y;
+
     if (this.y === -20) {
         stats.score();
     }
@@ -102,6 +103,7 @@ Player.prototype.handleInput = function(key) {
             if (this.y === 60) {
                 for (var i = 0; i < 4; i++) {
                     if (allRocks[i].x === this.x) {
+                        alertText("Can't move there!");
                         return;
                     }
                 }
@@ -120,9 +122,11 @@ Player.prototype.handleInput = function(key) {
         if (this.spriteIndex === 4) {
             this.spriteIndex = 0;
             this.sprite = this.SPRITE_FILES[this.spriteIndex];
+            alertText("Changed character!");
         } else {
             this.spriteIndex++;
             this.sprite = this.SPRITE_FILES[this.spriteIndex];
+            alertText("Changed character!");
         }
     }
 }
@@ -266,26 +270,58 @@ Stats.prototype.render = function() {
 }
 
 /*=======================================================================
-// Instantiate 10 Enemy, one Player, four Rocks, and one Stats object.
+// Instantiate nine Enemy, four Rocks, one Player, and one Stats object.
 =======================================================================*/
 var allEnemies = [];
-
-for (var i = 0; i < 10; i++) {
-    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-    var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
-    var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-    allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
-}
-
 var allRocks = [];
-
-for (var i = 0; i < 4; i++) {
-    var randomColLoc = Math.floor(Math.random() * (5)) + 1;
-    allRocks.push(new Rock(randomColLoc, -20));
-}
-
 var player = new Player();
 var stats = new Stats();
+
+/*=======================================================================
+// Three Enemies will be instantiated per row. Each row has a randomized
+// speed for its Enemies, although all Enemies sharing a row move at
+// the same speed (for a better game experience).
+=======================================================================*/
+for (var i = 0; i < 3; i++) {
+    if (i === 0) {
+        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+            for (var k = 0; k < 3; k++) {
+                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                allEnemies.push(new Enemy(randomXLoc, 1, randomSpeed));
+            }
+    } else if (i === 1) {
+        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+            for (var k = 0; k < 3; k++) {
+                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                allEnemies.push(new Enemy(randomXLoc, 2, randomSpeed));
+            }
+    } else if (i === 2) {
+        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+            for (var k = 0; k < 3; k++) {
+                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                allEnemies.push(new Enemy(randomXLoc, 3, randomSpeed));
+            }
+    }
+}
+
+/*=======================================================================
+// Four Rocks will be spawned in the water at the top of the map
+// preventing the Player from moving into that space. Rock will not
+// spawn in the same location, and only one water space will be
+// open for the Player to move to.
+=======================================================================*/
+function spawnRocks() {
+    var colNums = [1, 2, 3, 4, 5];
+    var randomRockIndex = Math.floor(Math.random() * 5);
+    colNums.splice(randomRockIndex, 1);
+
+    for (var i = 0; i < colNums.length; i++) {
+        console.log(i);
+        allRocks.push(new Rock(colNums[i], -20));
+    }
+}
+
+spawnRocks();
 
 /*=======================================================================
 // An event listener that removes one Enemy upon clicking the Easier
@@ -293,8 +329,11 @@ var stats = new Stats();
 =======================================================================*/
 var easier = document.getElementsByClassName("menu-easier")[0];
 easier.addEventListener("click", function(e) {
-    if (allEnemies.length > 0) {
+    if (allEnemies.length > 5) {
         allEnemies.splice(allEnemies.length - 1);
+        alertText("Removed one enemy!");
+    } else {
+        alertText("Can't remove an enemy!");
     }
 })
 
@@ -304,16 +343,42 @@ easier.addEventListener("click", function(e) {
 =======================================================================*/
 var harder = document.getElementsByClassName("menu-harder")[0];
 harder.addEventListener("click", function(e) {
-    if (allEnemies.length < 20) {
+    if (allEnemies.length < 15) {
         var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
         var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
         var randomSpeed = Math.floor(Math.random() * (150)) + 100;
         allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+        alertText("Added one enemy!");
+    } else {
+        alertText("Can't add an enemy!");
     }
 })
 
 /*=======================================================================
-// A div will be created to display text within the game area.
+// The alert div will be used to display text at the center of the
+// screen to alert the user to an event. It will disappear after one
+// second.
+=======================================================================*/
+var alertDiv = document.getElementById('alert');
+alertDiv.style.display = 'none';
+
+function alertText(text) {
+    alertDiv.style.display = '';
+    let temporaryAlert = document.createElement('h3');
+    temporaryAlert.textContent = text;
+    alertDiv.appendChild(temporaryAlert);
+
+    setTimeout(
+        function() {
+            alertDiv.style.display = 'none';
+            alertDiv.removeChild(alertDiv.firstChild);
+        }, 500
+    );
+}
+
+/*=======================================================================
+// The modal div will be used to display windows in the center of the
+// game field.
 =======================================================================*/
 var modalDiv = document.getElementById('modal');
 modalDiv.style.display = 'none';
