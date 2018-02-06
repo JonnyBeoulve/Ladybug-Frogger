@@ -9,7 +9,8 @@ Once in-game, you can use your keyboard's arrow keys to move the player characte
 ## Note
 This game is currently in development. The main programming I have contributed can be found in js/app.js.
 
-Elements to soon be implemented:
+Work left to be done:
 
 * Power ups that randomly spawn in the game field.
-* Visual feedback when moving into a rock or earning a point.
+* A timer.
+* Refactoring.
