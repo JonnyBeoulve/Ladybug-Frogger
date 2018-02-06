@@ -69,6 +69,7 @@ Player.prototype.update = function() {
 
     if (this.y === -20) {
         stats.score();
+        alertText("You scored!");
     }
 }
 
