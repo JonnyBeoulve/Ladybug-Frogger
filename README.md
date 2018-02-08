@@ -12,5 +12,4 @@ This game is currently in development. The main programming I have contributed c
 Work left to be done:
 
 * Power ups that randomly spawn in the game field.
-* A timer.
 * Refactoring.
