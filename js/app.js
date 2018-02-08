@@ -61,7 +61,8 @@ Player.prototype.render = function() {
 }
 
 /*=======================================================================
-// Update the location of the player sprite.
+// Update the location of the player sprite. Render a score if the
+// player reaches water and add 10 seconds to the countdown timer.
 =======================================================================*/
 Player.prototype.update = function() {
     this.x = this.x;
@@ -69,6 +70,7 @@ Player.prototype.update = function() {
 
     if (this.y === -20) {
         stats.score();
+        stats.timer = stats.timer + 10;
         alertText("You scored!");
     }
 }
@@ -154,6 +156,7 @@ Rock.prototype.render = function() {
 var Stats = function() {
     this.lives = 3;
     this.points = 0;
+    this.timer = 30;
     this.heartSprite = 'images/heart.png';
     this.starSprite = 'images/star.png';
 }
@@ -169,6 +172,9 @@ Stats.prototype.score = function() {
 
     this.points++;
     this.render();
+
+    allRocks = [];
+    spawnRocks();
 
     if (this.points === 3) {
         this.endGame('win');
@@ -203,9 +209,9 @@ Stats.prototype.endGame = function(e) {
     modalVictoryHeader.classList.add('modal-victory');
 
     if(e == 'win') {
-        modalVictoryHeader.textContent = 'You Win!';
+        modalVictoryHeader.textContent = 'You Win';
     } else {
-        modalVictoryHeader.textContent = 'Game Over.';
+        modalVictoryHeader.textContent = 'Game Over';
     }
 
     /*=======================================================================
@@ -237,22 +243,22 @@ Stats.prototype.endGame = function(e) {
 // A new game is started upon clicking the Start New Game button.
 =======================================================================*/
 Stats.prototype.newGame = function() {
+    this.timer = 30;
     this.lives = 3;
     this.points = 0;
     player.x = 200;
     player.y = 380;
+    document.getElementById("countdown").style.backgroundColor = "hsl(138, 100%, 29%)";
 
-    for (var i = 0; i < 9; i++) {
-        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
-        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
-        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
-    }
+    allRocks = [];
+    spawnRocks();
+    spawnEnemies();
 }
 
 /*=======================================================================
 // This function will display hearts and stars on the top of the screen
-// to indicate player lives and points.
+// to indicate player lives and points. Also, reduce timer every one
+// second until it reaches 0, at which point the game ends.
 =======================================================================*/
 Stats.prototype.render = function() {
     var heartXLoc = 0;
@@ -271,7 +277,7 @@ Stats.prototype.render = function() {
 }
 
 /*=======================================================================
-// Instantiate nine Enemy, four Rocks, one Player, and one Stats object.
+// Instantiate Enemy, Rock, Player, and Stats objects.
 =======================================================================*/
 var allEnemies = [];
 var allRocks = [];
@@ -279,31 +285,37 @@ var player = new Player();
 var stats = new Stats();
 
 /*=======================================================================
-// Three Enemies will be instantiated per row. Each row has a randomized
+// Two Enemies will be instantiated per row. Each row has a randomized
 // speed for its Enemies, although all Enemies sharing a row move at
 // the same speed (for a better game experience).
 =======================================================================*/
-for (var i = 0; i < 3; i++) {
-    if (i === 0) {
-        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-            for (var k = 0; k < 3; k++) {
-                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                allEnemies.push(new Enemy(randomXLoc, 1, randomSpeed));
-            }
-    } else if (i === 1) {
-        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-            for (var k = 0; k < 3; k++) {
-                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                allEnemies.push(new Enemy(randomXLoc, 2, randomSpeed));
-            }
-    } else if (i === 2) {
-        var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-            for (var k = 0; k < 3; k++) {
-                var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                allEnemies.push(new Enemy(randomXLoc, 3, randomSpeed));
-            }
+function spawnEnemies() {
+    allEnemies = [];
+    
+    for (var i = 0; i < 3; i++) {
+        if (i === 0) {
+            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (var k = 0; k < 2; k++) {
+                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                    allEnemies.push(new Enemy(randomXLoc, 1, randomSpeed));
+                }
+        } else if (i === 1) {
+            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (var k = 0; k < 2; k++) {
+                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                    allEnemies.push(new Enemy(randomXLoc, 2, randomSpeed));
+                }
+        } else if (i === 2) {
+            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (var k = 0; k < 2; k++) {
+                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+                    allEnemies.push(new Enemy(randomXLoc, 3, randomSpeed));
+                }
+        }
     }
 }
+
+spawnEnemies();
 
 /*=======================================================================
 // Four Rocks will be spawned in the water at the top of the map
@@ -323,6 +335,34 @@ function spawnRocks() {
 }
 
 spawnRocks();
+
+/*=======================================================================
+// A countdown timer will count from 30 down to 0. If it reaches 0
+// the player will lose. Time will be added if the player earns a point.
+=======================================================================*/
+function countdownTimer() {
+    document.getElementById("countdown").innerHTML = stats.timer;
+
+    var x = setInterval(function() {
+        if (stats.timer > 0) {
+            stats.timer--;
+        } else if (stats.timer === 0) {
+            stats.endGame('gameover');
+            return;
+        } else {
+            console.log("Something went wrong with the countdown timer.");
+        }
+
+        if (stats.timer === 5) {
+            alertText("5 seconds left!");
+            document.getElementById("countdown").style.backgroundColor = "red";
+        }
+
+        document.getElementById("countdown").innerHTML = stats.timer;
+    }, 1000);
+}
+
+countdownTimer();
 
 /*=======================================================================
 // An event listener that removes one Enemy upon clicking the Easier
@@ -353,6 +393,14 @@ harder.addEventListener("click", function(e) {
     } else {
         alertText("Can't add an enemy!");
     }
+})
+
+/*=======================================================================
+// An event listener that resets the game.
+=======================================================================*/
+var reset = document.getElementsByClassName("menu-reset")[0];
+reset.addEventListener("click", function(e) {
+    stats.newGame();
 })
 
 /*=======================================================================

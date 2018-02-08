@@ -14,7 +14,7 @@ body {
 .menu-btn {
     display: block;
     position: absolute;
-    top: 600px;
+    top: 594px;
     text-align: center;
     margin: 0px auto 0px auto;
     width: 60px;
@@ -25,6 +25,8 @@ body {
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 5px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
     cursor: pointer;
 }
 
@@ -33,13 +35,18 @@ body {
 }
 
 .menu-easier {
-    left: 180px;
-    right: 0px;
+    left: 0px;
+    right: 440px;
 }
 
 .menu-harder {
+    left: 0px;
+    right: 310px;
+}
+
+.menu-reset {
     left: 310px;
-    right: 0px;
+    right: 0;
 }
 
 .menu-info {
@@ -48,7 +55,7 @@ body {
 }
 
 /*=======================================================================
-Styling for temporary alerts.
+// Styling for temporary alerts.
 =======================================================================*/
 #alert {
     margin: auto;
@@ -152,4 +159,27 @@ Styling for the modal window.
 
 .employees-blur {
     filter: blur(2px);
+}
+
+/*=======================================================================
+Styling for the countdown timer.
+=======================================================================*/
+#countdown {
+    display: block;
+    position: absolute;
+    top: 594px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    background-color: hsl(138, 100%, 29%);
+    color: white;
+    border: 3px solid rgba(0, 0, 0, 0.568);
+    border-top: 0;
+    border-radius: 5px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
 }
