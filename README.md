@@ -11,5 +11,6 @@ This game is currently in development. The main programming I have contributed c
 
 Work left to be done:
 
+* Sounds.
 * Power ups that randomly spawn in the game field.
 * Refactoring.
