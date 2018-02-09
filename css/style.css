@@ -18,8 +18,7 @@ body {
     text-align: center;
     margin: 0px auto 0px auto;
     width: 60px;
-    height: 40px;
-    line-height: 40px;
+    height: 20px;
     background-color: hsl(138, 100%, 29%);
     color: white;
     border: none;
@@ -167,19 +166,19 @@ Styling for the countdown timer.
 #countdown {
     display: block;
     position: absolute;
-    top: 594px;
+    top: 15px;
     left: 0px;
     right: 0px;
     text-align: center;
     margin: 0px auto 0px auto;
-    width: 90px;
+    width: 85px;
     height: 40px;
     line-height: 40px;
-    background-color: hsl(138, 100%, 29%);
+    background-color: hsla(140, 100%, 30%, 0.7);
     color: white;
     border: 3px solid rgba(0, 0, 0, 0.568);
-    border-top: 0;
+    border-bottom: 0;
     border-radius: 5px;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }

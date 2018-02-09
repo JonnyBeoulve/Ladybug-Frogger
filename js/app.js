@@ -1,4 +1,143 @@
 /*=======================================================================
+// The alert div will be used to display text at the center of the
+// screen to alert the user to an event. It will disappear after one
+// second.
+=======================================================================*/
+var alertDiv = document.getElementById('alert');
+alertDiv.style.display = 'none';
+
+function alertText(text) {
+    alertDiv.style.display = '';
+    let temporaryAlert = document.createElement('h3');
+    temporaryAlert.textContent = text;
+    alertDiv.appendChild(temporaryAlert);
+
+    setTimeout(
+        function() {
+            alertDiv.style.display = 'none';
+            alertDiv.removeChild(alertDiv.firstChild);
+        }, 500
+    );
+}
+
+/*=======================================================================
+// An event listener that removes one Enemy upon clicking the Easier
+// button.
+=======================================================================*/
+var easier = document.getElementsByClassName("menu-easier")[0];
+easier.style.display = 'none';
+easier.addEventListener("click", function(e) {
+    if (allEnemies.length > 5) {
+        allEnemies.splice(allEnemies.length - 1);
+        alertText("Removed one enemy!");
+    } else {
+        alertText("Can't remove an enemy!");
+    }
+})
+
+/*=======================================================================
+// An event listener that adds one Enemy upon clicking the Harder
+// button.
+=======================================================================*/
+var harder = document.getElementsByClassName("menu-harder")[0];
+harder.style.display = 'none';
+harder.addEventListener("click", function(e) {
+    if (allEnemies.length < 15) {
+        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
+        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
+        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
+        alertText("Added one enemy!");
+    } else {
+        alertText("Can't add an enemy!");
+    }
+})
+
+/*=======================================================================
+// An event listener that resets the game.
+=======================================================================*/
+var reset = document.getElementsByClassName("menu-reset")[0];
+reset.style.display = 'none';
+reset.addEventListener("click", function(e) {
+    stats.newGame('reset');
+})
+
+/*=======================================================================
+// Display application Info within the modal upon clicking the Info
+// button.
+=======================================================================*/
+var info = document.getElementsByClassName("menu-info")[0];
+info.style.display = 'none';
+info.addEventListener("click", function(e) {
+
+    /*=======================================================================
+    // Clear modal before adding info text.
+    =======================================================================*/
+    while(modalDiv.firstChild) {
+        modalDiv.removeChild(modalDiv.firstChild);
+    }
+
+    /*=======================================================================
+    // Prepare text to be added to modal.
+    =======================================================================*/
+    modalDiv.style.display = '';
+    let modalInstructionsHeader = document.createElement('h2');
+    modalInstructionsHeader.classList.add('modal-header');
+    modalInstructionsHeader.textContent = 'Instructions';
+    let modalControls = document.createElement('p');
+    modalControls.classList.add('modal-text');
+    modalControls.textContent = 'Use Arrow Keys to move. Press C to change character.';
+    let modalInstructions = document.createElement('p');
+    modalInstructions.classList.add('modal-text');
+    modalInstructions.textContent = 'Your goal is to navigate across the grid to the water on top while avoiding deadly ladybugs.';
+    let modalAboutHeader = document.createElement('h2');
+    modalAboutHeader.classList.add('modal-header');
+    modalAboutHeader.textContent = 'About';
+    let modalAboutText = document.createElement('p');
+    modalAboutText.classList.add('modal-text');
+    modalAboutText.textContent = 'This program was made by Jonathan Leack using JavaScript.';
+    let modalAboutText2 = document.createElement('p');
+    modalAboutText2.classList.add('modal-text');
+    modalAboutText2.textContent = 'www.JonathanLeack.com';
+
+    /*=======================================================================
+    // Create close button for closing the modal window.
+    =======================================================================*/
+    let modalCloseBtn = document.createElement('button');
+    modalCloseBtn.innerHTML = 'X';
+    modalCloseBtn.classList.add('modal-close');
+
+    /*=======================================================================
+    // Append elements, including the close button, to the modal.
+    =======================================================================*/
+    modalDiv.appendChild(modalCloseBtn);
+    modalDiv.appendChild(modalInstructionsHeader);
+    modalDiv.appendChild(modalControls);
+    modalDiv.appendChild(modalInstructions);
+    modalDiv.appendChild(modalAboutHeader);
+    modalDiv.appendChild(modalAboutText);
+    modalDiv.appendChild(modalAboutText2);
+
+    /*=======================================================================
+    // Create event listener for the close button
+    =======================================================================*/
+    modalCloseBtn.addEventListener('click', () => {
+        closeModal();
+    })
+})
+
+/* ================================================================
+// This function closes the Info modal.
+================================================================ */
+function closeModal() {
+    modalDiv.style.display = 'none';
+  
+    while(modalDiv.firstChild) {
+      modalDiv.removeChild(modalDiv.firstChild);
+    }
+  }
+
+/*=======================================================================
 // The enemy object.
 =======================================================================*/
 var Enemy = function(xLoc, rowLoc, speed) {
@@ -62,7 +201,7 @@ Player.prototype.render = function() {
 
 /*=======================================================================
 // Update the location of the player sprite. Render a score if the
-// player reaches water and add 10 seconds to the countdown timer.
+// player reaches water and add 3 seconds to the countdown timer.
 =======================================================================*/
 Player.prototype.update = function() {
     this.x = this.x;
@@ -70,7 +209,7 @@ Player.prototype.update = function() {
 
     if (this.y === -20) {
         stats.score();
-        stats.timer = stats.timer + 10;
+        stats.timer = stats.timer + 3;
         alertText("You scored!");
     }
 }
@@ -157,6 +296,7 @@ var Stats = function() {
     this.lives = 3;
     this.points = 0;
     this.timer = 30;
+    this.firstStart = true;
     this.heartSprite = 'images/heart.png';
     this.starSprite = 'images/star.png';
 }
@@ -173,6 +313,9 @@ Stats.prototype.score = function() {
     this.points++;
     this.render();
 
+    allEnemies = [];
+    spawnEnemies();
+
     allRocks = [];
     spawnRocks();
 
@@ -180,6 +323,13 @@ Stats.prototype.score = function() {
         this.endGame('win');
     }
 }
+
+/*=======================================================================
+// The modal div will be used to display windows in the center of the
+// game field.
+=======================================================================*/
+var modalDiv = document.getElementById('modal');
+modalDiv.style.display = 'none';
 
 /*=======================================================================
 // An end game screen that functions as both the failure and victory
@@ -195,11 +345,17 @@ Stats.prototype.endGame = function(e) {
     })
 
     /*=======================================================================
-    // Clear modal before adding text.
+    // Clear modal before adding text and hide menu buttons.
     =======================================================================*/
-    while(modalDiv.firstChild) {
-        modalDiv.removeChild(modalDiv.firstChild);
+    if (e == 'win' || e == 'gameover') {
+        while(modalDiv.firstChild) {
+            modalDiv.removeChild(modalDiv.firstChild);
+        }
     }
+    easier.style.display = 'none';
+    harder.style.display = 'none';
+    reset.style.display = 'none';
+    info.style.display = 'none';
 
     /*=======================================================================
     // Prepare text depending on if the user won or lost.
@@ -208,10 +364,12 @@ Stats.prototype.endGame = function(e) {
     let modalVictoryHeader = document.createElement('h2');
     modalVictoryHeader.classList.add('modal-victory');
 
-    if(e == 'win') {
+    if (e == 'win') {
         modalVictoryHeader.textContent = 'You Win';
-    } else {
+    } else if (e == 'gameover') {
         modalVictoryHeader.textContent = 'Game Over';
+    } else if (e == 'intro') {
+        modalVictoryHeader.textContent = 'Get Ready';
     }
 
     /*=======================================================================
@@ -240,19 +398,33 @@ Stats.prototype.endGame = function(e) {
 }
 
 /*=======================================================================
-// A new game is started upon clicking the Start New Game button.
+// A new game is started upon clicking the Start New Game button. Also,
+// the menu buttons will be shown during play. The first start
+// condition is used to ensure only one countdown is created.
 =======================================================================*/
-Stats.prototype.newGame = function() {
+Stats.prototype.newGame = function(e) {
     this.timer = 30;
     this.lives = 3;
     this.points = 0;
     player.x = 200;
     player.y = 380;
-    document.getElementById("countdown").style.backgroundColor = "hsl(138, 100%, 29%)";
+    document.getElementById("countdown").style.backgroundColor = "hsla(140, 100%, 30%, 0.7)";
+
+    easier.style.display = '';
+    harder.style.display = '';
+    reset.style.display = '';
+    info.style.display = '';
 
     allRocks = [];
     spawnRocks();
     spawnEnemies();
+
+    if (this.firstStart === true) {
+        countdownTimer();
+        this.firstStart = false;
+    } else {
+        return;
+    }
 }
 
 /*=======================================================================
@@ -285,6 +457,15 @@ var player = new Player();
 var stats = new Stats();
 
 /*=======================================================================
+// Executes introduction page which includes text and a start button.
+=======================================================================*/
+function introduction() {
+    stats.endGame('intro');
+}
+
+introduction();
+
+/*=======================================================================
 // Two Enemies will be instantiated per row. Each row has a randomized
 // speed for its Enemies, although all Enemies sharing a row move at
 // the same speed (for a better game experience).
@@ -315,8 +496,6 @@ function spawnEnemies() {
     }
 }
 
-spawnEnemies();
-
 /*=======================================================================
 // Four Rocks will be spawned in the water at the top of the map
 // preventing the Player from moving into that space. Rock will not
@@ -329,12 +508,9 @@ function spawnRocks() {
     colNums.splice(randomRockIndex, 1);
 
     for (var i = 0; i < colNums.length; i++) {
-        console.log(i);
         allRocks.push(new Rock(colNums[i], -20));
     }
 }
-
-spawnRocks();
 
 /*=======================================================================
 // A countdown timer will count from 30 down to 0. If it reaches 0
@@ -344,167 +520,21 @@ function countdownTimer() {
     document.getElementById("countdown").innerHTML = stats.timer;
 
     var x = setInterval(function() {
-        if (stats.timer > 0) {
+        if (stats.timer > 0 && stats.points != 3) {
             stats.timer--;
-        } else if (stats.timer === 0) {
+        } else if (stats.timer === 0 && stats.points != 3) {
             stats.endGame('gameover');
             return;
-        } else {
-            console.log("Something went wrong with the countdown timer.");
         }
 
         if (stats.timer === 5) {
             alertText("5 seconds left!");
-            document.getElementById("countdown").style.backgroundColor = "red";
+            document.getElementById("countdown").style.backgroundColor = "rgba(255, 0, 0, 0.767)";
         }
 
         document.getElementById("countdown").innerHTML = stats.timer;
     }, 1000);
 }
-
-countdownTimer();
-
-/*=======================================================================
-// An event listener that removes one Enemy upon clicking the Easier
-// button.
-=======================================================================*/
-var easier = document.getElementsByClassName("menu-easier")[0];
-easier.addEventListener("click", function(e) {
-    if (allEnemies.length > 5) {
-        allEnemies.splice(allEnemies.length - 1);
-        alertText("Removed one enemy!");
-    } else {
-        alertText("Can't remove an enemy!");
-    }
-})
-
-/*=======================================================================
-// An event listener that adds one Enemy upon clicking the Harder
-// button.
-=======================================================================*/
-var harder = document.getElementsByClassName("menu-harder")[0];
-harder.addEventListener("click", function(e) {
-    if (allEnemies.length < 15) {
-        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
-        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
-        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
-        alertText("Added one enemy!");
-    } else {
-        alertText("Can't add an enemy!");
-    }
-})
-
-/*=======================================================================
-// An event listener that resets the game.
-=======================================================================*/
-var reset = document.getElementsByClassName("menu-reset")[0];
-reset.addEventListener("click", function(e) {
-    stats.newGame();
-})
-
-/*=======================================================================
-// The alert div will be used to display text at the center of the
-// screen to alert the user to an event. It will disappear after one
-// second.
-=======================================================================*/
-var alertDiv = document.getElementById('alert');
-alertDiv.style.display = 'none';
-
-function alertText(text) {
-    alertDiv.style.display = '';
-    let temporaryAlert = document.createElement('h3');
-    temporaryAlert.textContent = text;
-    alertDiv.appendChild(temporaryAlert);
-
-    setTimeout(
-        function() {
-            alertDiv.style.display = 'none';
-            alertDiv.removeChild(alertDiv.firstChild);
-        }, 500
-    );
-}
-
-/*=======================================================================
-// The modal div will be used to display windows in the center of the
-// game field.
-=======================================================================*/
-var modalDiv = document.getElementById('modal');
-modalDiv.style.display = 'none';
-
-/*=======================================================================
-// Display application Info within the modal upon clicking the Info
-// button.
-=======================================================================*/
-var info = document.getElementsByClassName("menu-info")[0];
-info.addEventListener("click", function(e) {
-
-    /*=======================================================================
-    // Clear modal before adding info text.
-    =======================================================================*/
-    while(modalDiv.firstChild) {
-        modalDiv.removeChild(modalDiv.firstChild);
-    }
-
-    /*=======================================================================
-    // Prepare text to be added to modal.
-    =======================================================================*/
-    modalDiv.style.display = '';
-    let modalInstructionsHeader = document.createElement('h2');
-    modalInstructionsHeader.classList.add('modal-header');
-    modalInstructionsHeader.textContent = 'Instructions';
-    let modalControls = document.createElement('p');
-    modalControls.classList.add('modal-text');
-    modalControls.textContent = 'Use Arrow Keys to move. Press C to change character.';
-    let modalInstructions = document.createElement('p');
-    modalInstructions.classList.add('modal-text');
-    modalInstructions.textContent = 'Your goal is to navigate across the grid to the water on top while avoiding deadly ladybugs.';
-    let modalAboutHeader = document.createElement('h2');
-    modalAboutHeader.classList.add('modal-header');
-    modalAboutHeader.textContent = 'About';
-    let modalAboutText = document.createElement('p');
-    modalAboutText.classList.add('modal-text');
-    modalAboutText.textContent = 'This program was made by Jonathan Leack using JavaScript.';
-    let modalAboutText2 = document.createElement('p');
-    modalAboutText2.classList.add('modal-text');
-    modalAboutText2.textContent = 'www.JonathanLeack.com';
-
-    /*=======================================================================
-    // Create close button for closing the modal window.
-    =======================================================================*/
-    let modalCloseBtn = document.createElement('button');
-    modalCloseBtn.innerHTML = 'X';
-    modalCloseBtn.classList.add('modal-close');
-
-    /*=======================================================================
-    // Append elements, including the close button, to the modal.
-    =======================================================================*/
-    modalDiv.appendChild(modalCloseBtn);
-    modalDiv.appendChild(modalInstructionsHeader);
-    modalDiv.appendChild(modalControls);
-    modalDiv.appendChild(modalInstructions);
-    modalDiv.appendChild(modalAboutHeader);
-    modalDiv.appendChild(modalAboutText);
-    modalDiv.appendChild(modalAboutText2);
-
-    /*=======================================================================
-    // Create event listener for the close button
-    =======================================================================*/
-    modalCloseBtn.addEventListener('click', () => {
-        closeModal();
-    })
-})
-
-/* ================================================================
-// This function closes the Info modal.
-================================================================ */
-function closeModal() {
-    modalDiv.style.display = 'none';
-  
-    while(modalDiv.firstChild) {
-      modalDiv.removeChild(modalDiv.firstChild);
-    }
-  }
 
 /*=======================================================================
 // An input listener binds the arrow keys on the keyboard to
