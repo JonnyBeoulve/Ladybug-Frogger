@@ -6,6 +6,11 @@ Download the project and place it into a folder. Then, open index.html to get st
 
 Once in-game, you can use your keyboard's arrow keys to move the player character or the 'c' key to change your sprite.
 
+## Programming
+* HTML
+* CSS
+* JavaScript (ES5)
+
 ## Note
 The main programming I have contributed can be found in js/app.js.
 
