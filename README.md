@@ -1,4 +1,4 @@
-# Object-Oriented Frogger
+# Ladybug Frogger
 This is an object-oriented JavaScript ES5 game that plays similar to the retro classic Frogger.
 
 ## How to Use the Program
