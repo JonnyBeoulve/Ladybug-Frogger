@@ -2,9 +2,7 @@
 This is an object-oriented JavaScript ES5 game that plays similar to the retro classic Frogger.
 
 ## How to Use the Program
-Download the project and place it into a folder. Then, open index.html to get started.
-
-Once in-game, you can use your keyboard's arrow keys to move the player character or the 'c' key to change your sprite.
+Demo: http://www.jonathanleack.com/ladybug-frogger/
 
 ## Programming
 * HTML
