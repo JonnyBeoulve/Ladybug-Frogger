@@ -95,7 +95,7 @@ info.addEventListener("click", function(e) {
     modalAboutHeader.textContent = 'About';
     let modalAboutText = document.createElement('p');
     modalAboutText.classList.add('modal-text');
-    modalAboutText.textContent = 'This program was made by Jonathan Leack using JavaScript.';
+    modalAboutText.textContent = 'This program was made by Jonathan Leack.';
     let modalAboutText2 = document.createElement('p');
     modalAboutText2.classList.add('modal-text');
     modalAboutText2.textContent = 'www.JonathanLeack.com';
@@ -365,7 +365,7 @@ Stats.prototype.endGame = function(e) {
     modalVictoryHeader.classList.add('modal-victory');
 
     if (e == 'win') {
-        modalVictoryHeader.textContent = 'You Win';
+        modalVictoryHeader.textContent = 'You Win. Congrats!';
     } else if (e == 'gameover') {
         modalVictoryHeader.textContent = 'Game Over';
     } else if (e == 'intro') {
@@ -408,7 +408,7 @@ Stats.prototype.newGame = function(e) {
     this.points = 0;
     player.x = 200;
     player.y = 380;
-    document.getElementById("countdown").style.backgroundColor = "hsla(140, 100%, 30%, 0.7)";
+    document.getElementById("countdown").style.backgroundColor = "hsla(224, 56%, 52%, 0.945)";
 
     easier.style.display = '';
     harder.style.display = '';
