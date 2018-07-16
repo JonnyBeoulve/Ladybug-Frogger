@@ -17,3 +17,5 @@ In the future the following will be added for this project:
 * Sounds.
 * Power ups that randomly spawn in the game field.
 * Refactoring.
+
+I will eventually be converting the game to ES6, which will require substantial changes.

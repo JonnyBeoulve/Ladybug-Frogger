@@ -3,7 +3,7 @@
 // screen to alert the user to an event. It will disappear after one
 // second.
 =======================================================================*/
-var alertDiv = document.getElementById('alert');
+let alertDiv = document.getElementById('alert');
 alertDiv.style.display = 'none';
 
 function alertText(text) {
@@ -24,7 +24,7 @@ function alertText(text) {
 // An event listener that removes one Enemy upon clicking the Easier
 // button.
 =======================================================================*/
-var easier = document.getElementsByClassName("menu-easier")[0];
+let easier = document.getElementsByClassName("menu-easier")[0];
 easier.style.display = 'none';
 easier.addEventListener("click", function(e) {
     if (allEnemies.length > 5) {
@@ -39,13 +39,13 @@ easier.addEventListener("click", function(e) {
 // An event listener that adds one Enemy upon clicking the Harder
 // button.
 =======================================================================*/
-var harder = document.getElementsByClassName("menu-harder")[0];
+let harder = document.getElementsByClassName("menu-harder")[0];
 harder.style.display = 'none';
 harder.addEventListener("click", function(e) {
     if (allEnemies.length < 15) {
-        var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-        var randomRowLoc = Math.floor(Math.random() * (3)) + 1;
-        var randomSpeed = Math.floor(Math.random() * (150)) + 100;
+        let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+        let randomRowLoc = Math.floor(Math.random() * (3)) + 1;
+        let randomSpeed = Math.floor(Math.random() * (150)) + 100;
         allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
         alertText("Added one enemy!");
     } else {
@@ -56,7 +56,7 @@ harder.addEventListener("click", function(e) {
 /*=======================================================================
 // An event listener that resets the game.
 =======================================================================*/
-var reset = document.getElementsByClassName("menu-reset")[0];
+let reset = document.getElementsByClassName("menu-reset")[0];
 reset.style.display = 'none';
 reset.addEventListener("click", function(e) {
     stats.newGame('reset');
@@ -66,7 +66,7 @@ reset.addEventListener("click", function(e) {
 // Display application Info within the modal upon clicking the Info
 // button.
 =======================================================================*/
-var info = document.getElementsByClassName("menu-info")[0];
+let info = document.getElementsByClassName("menu-info")[0];
 info.style.display = 'none';
 info.addEventListener("click", function(e) {
 
@@ -135,12 +135,28 @@ function closeModal() {
     while(modalDiv.firstChild) {
       modalDiv.removeChild(modalDiv.firstChild);
     }
-  }
+}
+
+/*=======================================================================
+// An input listener binds the arrow keys on the keyboard to
+// move the Player character.
+=======================================================================*/
+document.addEventListener('keyup', function(e) {
+    let allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        67: 'changesprite'
+    };
+
+    player.handleInput(allowedKeys[e.keyCode]);
+});
 
 /*=======================================================================
 // The enemy object.
 =======================================================================*/
-var Enemy = function(xLoc, rowLoc, speed) {
+let Enemy = function(xLoc, rowLoc, speed) {
     this.x = xLoc;
     this.y = 60 + ((rowLoc - 1) * 80);
     this.speed = speed / 2;
@@ -173,7 +189,7 @@ Enemy.prototype.render = function() {
 /*=======================================================================
 // The Player object.
 =======================================================================*/
-var Player = function() {
+let Player = function() {
     this.x = 200;
     this.y = 380;
     this.spriteIndex = 0;
@@ -243,7 +259,7 @@ Player.prototype.handleInput = function(key) {
     } else if (key === 'up') {
         if (this.y > 0) {
             if (this.y === 60) {
-                for (var i = 0; i < 4; i++) {
+                for (let i = 0; i < 4; i++) {
                     if (allRocks[i].x === this.x) {
                         alertText("Can't move there!");
                         return;
@@ -276,7 +292,7 @@ Player.prototype.handleInput = function(key) {
 /*=======================================================================
 // The Rock object.
 =======================================================================*/
-var Rock = function(rowLoc, colLoc) {
+let Rock = function(rowLoc, colLoc) {
     this.x = ((rowLoc) * 100) - 100;
     this.y = colLoc;
     this.sprite = 'images/rock.png';
@@ -292,7 +308,7 @@ Rock.prototype.render = function() {
 /*=======================================================================
 // The Stats object.
 =======================================================================*/
-var Stats = function() {
+let Stats = function() {
     this.lives = 3;
     this.points = 0;
     this.timer = 30;
@@ -328,7 +344,7 @@ Stats.prototype.score = function() {
 // The modal div will be used to display windows in the center of the
 // game field.
 =======================================================================*/
-var modalDiv = document.getElementById('modal');
+let modalDiv = document.getElementById('modal');
 modalDiv.style.display = 'none';
 
 /*=======================================================================
@@ -433,37 +449,20 @@ Stats.prototype.newGame = function(e) {
 // second until it reaches 0, at which point the game ends.
 =======================================================================*/
 Stats.prototype.render = function() {
-    var heartXLoc = 0;
-    var heartYLoc = -10;
-    var starXLoc = 470;
-    var starYLoc = -10;
+    let heartXLoc = 0;
+    let heartYLoc = -10;
+    let starXLoc = 470;
+    let starYLoc = -10;
 
-    for (var i = this.lives; i > 0; i--) {
+    for (let i = this.lives; i > 0; i--) {
         ctx.drawImage(Resources.get(this.heartSprite), heartXLoc, heartYLoc);
         heartXLoc = heartXLoc + 40;
     }
-    for (var k = this.points; k > 0; k--) {
+    for (let k = this.points; k > 0; k--) {
         ctx.drawImage(Resources.get(this.starSprite), starXLoc, starYLoc);
         starXLoc = starXLoc - 40;
     }
 }
-
-/*=======================================================================
-// Instantiate Enemy, Rock, Player, and Stats objects.
-=======================================================================*/
-var allEnemies = [];
-var allRocks = [];
-var player = new Player();
-var stats = new Stats();
-
-/*=======================================================================
-// Executes introduction page which includes text and a start button.
-=======================================================================*/
-function introduction() {
-    stats.endGame('intro');
-}
-
-introduction();
 
 /*=======================================================================
 // Two Enemies will be instantiated per row. Each row has a randomized
@@ -473,23 +472,23 @@ introduction();
 function spawnEnemies() {
     allEnemies = [];
     
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         if (i === 0) {
-            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (var k = 0; k < 2; k++) {
-                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (let k = 0; k < 2; k++) {
+                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
                     allEnemies.push(new Enemy(randomXLoc, 1, randomSpeed));
                 }
         } else if (i === 1) {
-            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (var k = 0; k < 2; k++) {
-                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (let k = 0; k < 2; k++) {
+                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
                     allEnemies.push(new Enemy(randomXLoc, 2, randomSpeed));
                 }
         } else if (i === 2) {
-            var randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (var k = 0; k < 2; k++) {
-                    var randomXLoc = Math.floor(Math.random() * (1000)) + 1;
+            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
+                for (let k = 0; k < 2; k++) {
+                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
                     allEnemies.push(new Enemy(randomXLoc, 3, randomSpeed));
                 }
         }
@@ -503,11 +502,11 @@ function spawnEnemies() {
 // open for the Player to move to.
 =======================================================================*/
 function spawnRocks() {
-    var colNums = [1, 2, 3, 4, 5];
-    var randomRockIndex = Math.floor(Math.random() * 5);
+    let colNums = [1, 2, 3, 4, 5];
+    let randomRockIndex = Math.floor(Math.random() * 5);
     colNums.splice(randomRockIndex, 1);
 
-    for (var i = 0; i < colNums.length; i++) {
+    for (let i = 0; i < colNums.length; i++) {
         allRocks.push(new Rock(colNums[i], -20));
     }
 }
@@ -519,7 +518,7 @@ function spawnRocks() {
 function countdownTimer() {
     document.getElementById("countdown").innerHTML = stats.timer;
 
-    var x = setInterval(function() {
+    let x = setInterval(function() {
         if (stats.timer > 0 && stats.points != 3) {
             stats.timer--;
         } else if (stats.timer === 0 && stats.points != 3) {
@@ -537,17 +536,18 @@ function countdownTimer() {
 }
 
 /*=======================================================================
-// An input listener binds the arrow keys on the keyboard to
-// move the Player character.
+// Instantiate Enemy, Rock, Player, and Stats objects.
 =======================================================================*/
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        67: 'changesprite'
-    };
+let allEnemies = [];
+let allRocks = [];
+let player = new Player();
+let stats = new Stats();
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+/*=======================================================================
+// Executes introduction page which includes text and a start button.
+=======================================================================*/
+function introduction() {
+    stats.endGame('intro');
+}
+
+introduction();
