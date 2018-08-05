@@ -15,6 +15,13 @@ document.addEventListener('keyup', function(e) {
 });
 
 /*=======================================================================
+// The modal div will be used to display windows in the center of the
+// game field.
+=======================================================================*/
+let modalDiv = document.getElementById('modal');
+modalDiv.style.display = 'none';
+
+/*=======================================================================
 // The enemy object. The constructor will determine the x and y location
 // in addition to movement speed. The enemy will be portrayed as a
 // ladybug moving left to right.
@@ -91,63 +98,62 @@ class Player {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-}
 
-/*=======================================================================
-// Upon collision with an enemy the player will be reset and a life will
-// be lost.
-=======================================================================*/
-Player.prototype.death = function() {
-    this.x = 200
-    this.y = 380;
-    stats.lives = stats.lives - 1;
-
-    if(stats.lives === 0) {
-        stats.endGame('gameover');
-    }
-}
-
-/*=======================================================================
-// Handle keyboard inputs by the user to move in a 4-directional plane.
-// Conditions are included to prevent the player from leaving the grid.
-// If the player tries to move into a rock then the movement will be
-// prevented.
-=======================================================================*/
-Player.prototype.handleInput = function(key) {
-
-    if (key === 'left') {
-        if (this.x > 0) {
-            this.x = this.x - 100;
+    /*=======================================================================
+    // Upon collision with an enemy the player will be reset and a life will
+    // be lost.
+    =======================================================================*/
+    death() {
+        this.x = 200
+        this.y = 380;
+        stats.lives = stats.lives - 1;
+    
+        if(stats.lives === 0) {
+            stats.endGame('gameover');
         }
-    } else if (key === 'up') {
-        if (this.y > 0) {
-            if (this.y === 60) {
-                for (let i = 0; i < 4; i++) {
-                    if (allRocks[i].x === this.x) {
-                        alertText("Can't move there!");
-                        return;
+    }
+
+    /*=======================================================================
+    // Handle keyboard inputs by the user to move in a 4-directional plane.
+    // Conditions are included to prevent the player from leaving the grid.
+    // If the player tries to move into a rock then the movement will be
+    // prevented.
+    =======================================================================*/
+    handleInput(key) {
+        if (key === 'left') {
+            if (this.x > 0) {
+                this.x = this.x - 100;
+            }
+        } else if (key === 'up') {
+            if (this.y > 0) {
+                if (this.y === 60) {
+                    for (let i = 0; i < 4; i++) {
+                        if (allRocks[i].x === this.x) {
+                            alertText("Can't move there!");
+                            return;
+                        }
                     }
                 }
+                this.y = this.y - 80;
             }
-            this.y = this.y - 80;
-        }
-    } else if (key === 'right') {
-        if (this.x < 400) {
-            this.x = this.x + 100;
-        }
-    } else if (key === 'down') {
-        if (this.y < 380) {
-            this.y = this.y + 80;
-        }
-    } else if (key === 'changesprite') {
-        if (this.spriteIndex === 4) {
-            this.spriteIndex = 0;
-            this.sprite = this.SPRITE_FILES[this.spriteIndex];
-            alertText("Changed character!");
-        } else {
-            this.spriteIndex++;
-            this.sprite = this.SPRITE_FILES[this.spriteIndex];
-            alertText("Changed character!");
+        } else if (key === 'right') {
+            if (this.x < 400) {
+                this.x = this.x + 100;
+            }
+        } else if (key === 'down') {
+            if (this.y < 380) {
+                this.y = this.y + 80;
+            }
+        } else if (key === 'changesprite') {
+            if (this.spriteIndex === 4) {
+                this.spriteIndex = 0;
+                this.sprite = this.SPRITE_FILES[this.spriteIndex];
+                alertText("Changed character!");
+            } else {
+                this.spriteIndex++;
+                this.sprite = this.SPRITE_FILES[this.spriteIndex];
+                alertText("Changed character!");
+            }
         }
     }
 }
@@ -161,13 +167,13 @@ class Rock {
         this.y = colLoc;
         this.sprite = 'images/rock.png';
     }
-}
 
-/*=======================================================================
-// Render the rock sprite on four of the five water spaces.
-=======================================================================*/
-Rock.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    /*=======================================================================
+    // Render the rock sprite on four of the five water spaces.
+    =======================================================================*/
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 }
 
 /*=======================================================================
@@ -182,153 +188,140 @@ class Stats {
         this.heartSprite = 'images/heart.png';
         this.starSprite = 'images/star.png';
     }
-}
-
-/*=======================================================================
-// Upon reaching the water the player will be reset and given a point.
-// If the player has achieved 3 points then a victory screen will
-// be displayed with the option to start a new game.
-=======================================================================*/
-Stats.prototype.score = function() {
-    player.x = 200
-    player.y = 380;
-
-    this.points++;
-    this.render();
-
-    allEnemies = [];
-    spawnEnemies();
-
-    allRocks = [];
-    spawnRocks();
-
-    if (this.points === 3) {
-        this.endGame('win');
-    }
-}
-
-/*=======================================================================
-// The modal div will be used to display windows in the center of the
-// game field.
-=======================================================================*/
-let modalDiv = document.getElementById('modal');
-modalDiv.style.display = 'none';
-
-/*=======================================================================
-// An end game screen that functions as both the failure and victory
-// screen depending on the string passed into the function.
-=======================================================================*/
-Stats.prototype.endGame = function(e) {
 
     /*=======================================================================
-    // Clear grid.
+    // Upon reaching the water the player will be reset and given a point.
+    // If the player has achieved 3 points then a victory screen will
+    // be displayed with the option to start a new game.
     =======================================================================*/
-    allEnemies.forEach(function(e) {
-        allEnemies.splice(0, allEnemies.length);
-    })
-
-    /*=======================================================================
-    // Clear modal before adding text and hide menu buttons.
-    =======================================================================*/
-    if (e == 'win' || e == 'gameover') {
-        while(modalDiv.firstChild) {
-            modalDiv.removeChild(modalDiv.firstChild);
+    score() {
+        player.x = 200
+        player.y = 380;
+    
+        this.points++;
+        this.render();
+    
+        allEnemies = [];
+        spawnEnemies();
+    
+        allRocks = [];
+        spawnRocks();
+    
+        if (this.points === 3) {
+            this.endGame('win');
         }
     }
-    easier.style.display = 'none';
-    harder.style.display = 'none';
-    reset.style.display = 'none';
-    info.style.display = 'none';
 
     /*=======================================================================
-    // Prepare text depending on if the user won or lost.
+    // An end game screen that functions as both the failure and victory
+    // screen depending on the string passed into the function.
     =======================================================================*/
-    modalDiv.style.display = '';
-    let modalVictoryHeader = document.createElement('h2');
-    modalVictoryHeader.classList.add('modal-victory');
+    endGame(e) {
+        // Clear grid.
+        allEnemies.forEach(function(e) {
+            allEnemies.splice(0, allEnemies.length);
+        })
 
-    if (e == 'win') {
-        modalVictoryHeader.textContent = 'You Win. Congrats!';
-    } else if (e == 'gameover') {
-        modalVictoryHeader.textContent = 'Game Over';
-    } else if (e == 'intro') {
-        modalVictoryHeader.textContent = 'Get Ready';
+        // Clear modal before adding text and hide menu buttons.
+        if (e == 'win' || e == 'gameover') {
+            while(modalDiv.firstChild) {
+                modalDiv.removeChild(modalDiv.firstChild);
+            }
+        }
+        easier.style.display = 'none';
+        harder.style.display = 'none';
+        reset.style.display = 'none';
+        info.style.display = 'none';
+
+        // Prepare text depending on if the user won or lost.
+        modalDiv.style.display = '';
+        let modalVictoryHeader = document.createElement('h2');
+        modalVictoryHeader.classList.add('modal-victory');
+
+        if (e == 'win') {
+            modalVictoryHeader.textContent = 'You Win. Congrats!';
+        } else if (e == 'gameover') {
+            modalVictoryHeader.textContent = 'Game Over';
+        } else if (e == 'intro') {
+            modalVictoryHeader.textContent = 'Get Ready';
+        }
+
+        // Create Start New Game button.
+        let modalNewGameBtn = document.createElement('button');
+        modalNewGameBtn.innerHTML = 'Start New Game';
+        modalNewGameBtn.classList.add('modal-new-game');
+
+        // Append elements, including the close button, to the modal.
+        modalDiv.appendChild(modalVictoryHeader);
+        modalDiv.appendChild(modalNewGameBtn);
+
+        // Create event listener for the close button
+        modalNewGameBtn.addEventListener('click', () => {
+            while(modalDiv.firstChild) {
+                modalDiv.removeChild(modalDiv.firstChild);
+            }
+            modalDiv.style.display = 'none';
+            this.newGame();
+        })
     }
 
     /*=======================================================================
-    // Create Start New Game button.
+    // A new game is started upon clicking the Start New Game button. Also,
+    // the menu buttons will be shown during play. The first start
+    // condition is used to ensure only one countdown is created.
     =======================================================================*/
-    let modalNewGameBtn = document.createElement('button');
-    modalNewGameBtn.innerHTML = 'Start New Game';
-    modalNewGameBtn.classList.add('modal-new-game');
+    newGame(e) {
+        this.timer = 30;
+        this.lives = 3;
+        this.points = 0;
+        player.x = 200;
+        player.y = 380;
+        document.getElementById("countdown").style.backgroundColor = "hsla(224, 56%, 52%, 0.945)";
+    
+        easier.style.display = '';
+        harder.style.display = '';
+        reset.style.display = '';
+        info.style.display = '';
+    
+        allRocks = [];
+        spawnRocks();
+        spawnEnemies();
+    
+        if (this.firstStart === true) {
+            countdownTimer();
+            this.firstStart = false;
+        } else {
+            return;
+        }
+    }
 
     /*=======================================================================
-    // Append elements, including the close button, to the modal.
+    // This function will display hearts and stars on the top of the screen
+    // to indicate player lives and points. Also, reduce timer every one
+    // second until it reaches 0, at which point the game ends.
     =======================================================================*/
-    modalDiv.appendChild(modalVictoryHeader);
-    modalDiv.appendChild(modalNewGameBtn);
-
-    /*=======================================================================
-    // Create event listener for the close button
-    =======================================================================*/
-    modalNewGameBtn.addEventListener('click', () => {
-        while(modalDiv.firstChild) {
-            modalDiv.removeChild(modalDiv.firstChild);
-          }
-        modalDiv.style.display = 'none';
-        this.newGame();
-    })
+    render() {
+        let heartXLoc = 0;
+        let heartYLoc = -10;
+        let starXLoc = 470;
+        let starYLoc = -10;
+    
+        for (let i = this.lives; i > 0; i--) {
+            ctx.drawImage(Resources.get(this.heartSprite), heartXLoc, heartYLoc);
+            heartXLoc = heartXLoc + 40;
+        }
+        for (let k = this.points; k > 0; k--) {
+            ctx.drawImage(Resources.get(this.starSprite), starXLoc, starYLoc);
+            starXLoc = starXLoc - 40;
+        }
+    }
 }
 
 /*=======================================================================
-// A new game is started upon clicking the Start New Game button. Also,
-// the menu buttons will be shown during play. The first start
-// condition is used to ensure only one countdown is created.
+// Executes introduction page which includes text and a start button.
 =======================================================================*/
-Stats.prototype.newGame = function(e) {
-    this.timer = 30;
-    this.lives = 3;
-    this.points = 0;
-    player.x = 200;
-    player.y = 380;
-    document.getElementById("countdown").style.backgroundColor = "hsla(224, 56%, 52%, 0.945)";
-
-    easier.style.display = '';
-    harder.style.display = '';
-    reset.style.display = '';
-    info.style.display = '';
-
-    allRocks = [];
-    spawnRocks();
-    spawnEnemies();
-
-    if (this.firstStart === true) {
-        countdownTimer();
-        this.firstStart = false;
-    } else {
-        return;
-    }
-}
-
-/*=======================================================================
-// This function will display hearts and stars on the top of the screen
-// to indicate player lives and points. Also, reduce timer every one
-// second until it reaches 0, at which point the game ends.
-=======================================================================*/
-Stats.prototype.render = function() {
-    let heartXLoc = 0;
-    let heartYLoc = -10;
-    let starXLoc = 470;
-    let starYLoc = -10;
-
-    for (let i = this.lives; i > 0; i--) {
-        ctx.drawImage(Resources.get(this.heartSprite), heartXLoc, heartYLoc);
-        heartXLoc = heartXLoc + 40;
-    }
-    for (let k = this.points; k > 0; k--) {
-        ctx.drawImage(Resources.get(this.starSprite), starXLoc, starYLoc);
-        starXLoc = starXLoc - 40;
-    }
+introduction = () => {
+    stats.endGame('intro');
 }
 
 /*=======================================================================
@@ -336,7 +329,7 @@ Stats.prototype.render = function() {
 // speed for its Enemies, although all Enemies sharing a row move at
 // the same speed (for a better game experience).
 =======================================================================*/
-function spawnEnemies() {
+spawnEnemies = () => {
     allEnemies = [];
     
     for (let i = 0; i < 3; i++) {
@@ -368,7 +361,7 @@ function spawnEnemies() {
 // spawn in the same location, and only one water space will be
 // open for the Player to move to.
 =======================================================================*/
-function spawnRocks() {
+spawnRocks = () => {
     let colNums = [1, 2, 3, 4, 5];
     let randomRockIndex = Math.floor(Math.random() * 5);
     colNums.splice(randomRockIndex, 1);
@@ -382,7 +375,7 @@ function spawnRocks() {
 // A countdown timer will count from 30 down to 0. If it reaches 0
 // the player will lose. Time will be added if the player earns a point.
 =======================================================================*/
-function countdownTimer() {
+countdownTimer = () => {
     document.getElementById("countdown").innerHTML = stats.timer;
 
     let x = setInterval(function() {
@@ -403,18 +396,11 @@ function countdownTimer() {
 }
 
 /*=======================================================================
-// Instantiate Enemy, Rock, Player, and Stats objects.
+// Instantiate Enemy, Rock, Player, and Stats objects before presenting
+// user with introduction screen upon initial load.
 =======================================================================*/
 let allEnemies = [];
 let allRocks = [];
 let player = new Player();
 let stats = new Stats();
-
-/*=======================================================================
-// Executes introduction page which includes text and a start button.
-=======================================================================*/
-function introduction() {
-    stats.endGame('intro');
-}
-
 introduction();
