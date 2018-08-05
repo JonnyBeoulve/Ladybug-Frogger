@@ -80,6 +80,7 @@ class Player {
 
     /*=======================================================================
     // This function will update the location of the Player character.
+    // If the user is located at the top row of the game field, they score.
     =======================================================================*/
     update() {
         this.x = this.x;
@@ -101,7 +102,7 @@ class Player {
 
     /*=======================================================================
     // Upon collision with an enemy the player will be reset and a life will
-    // be lost.
+    // be lost. If lives equal zero, the player loses.
     =======================================================================*/
     death() {
         this.x = 200
