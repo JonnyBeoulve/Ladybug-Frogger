@@ -15,13 +15,6 @@ document.addEventListener('keyup', function(e) {
 });
 
 /*=======================================================================
-// The modal div will be used to display windows in the center of the
-// game field.
-=======================================================================*/
-let modalDiv = document.getElementById('modal');
-modalDiv.style.display = 'none';
-
-/*=======================================================================
 // The enemy object. The constructor will determine the x and y location
 // in addition to movement speed. The enemy will be portrayed as a
 // ladybug moving left to right.
@@ -196,16 +189,13 @@ class Stats {
     // be displayed with the option to start a new game.
     =======================================================================*/
     score() {
-        player.x = 200
-        player.y = 380;
-    
         this.points++;
         this.render();
-    
+        player.x = 200
+        player.y = 380;
         allEnemies = [];
-        spawnEnemies(2);
-    
         allRocks = [];
+        spawnEnemies(2);
         spawnRocks();
     
         if (this.points === 3) {
@@ -240,7 +230,8 @@ class Stats {
         modalVictoryHeader.classList.add('modal-victory');
 
         if (e == 'win') {
-            modalVictoryHeader.textContent = 'You Win. Congrats!';
+            const finalScore = ((this.lives * 100) + (this.timer * 10));
+            modalVictoryHeader.textContent = `You Win! ${finalScore} pts`;
         } else if (e == 'gameover') {
             modalVictoryHeader.textContent = 'Game Over';
         } else if (e == 'intro') {
@@ -328,16 +319,16 @@ introduction = () => {
 /*=======================================================================
 // Enemies will be instantiated within each row depending upon the passed
 // in argument numOfEnemies. Each row has a randomized speed for its
-//  Enemies, although all Enemies sharing a row move at the same speed 
+// Enemies, although all Enemies sharing a row move at the same speed 
 // (for a better game experience).
 =======================================================================*/
 spawnEnemies = (numOfEnemies) => {
     allEnemies = [];
 
     spawnEnemyRow = (rowNum, numEnemies) => {
-        let randomSpeed = Math.floor(Math.random() * (150)) + 200;
+        let randomSpeed = Math.floor(Math.random() * (150)) + 260;
         for (let k = 0; k < numEnemies; k++) {
-            let randomXLoc = Math.floor(Math.random() * (800)) + 1;
+            let randomXLoc = Math.floor((Math.random() * (((k + 1) * 80))) + ((k + 1) * 80) - 160);
             allEnemies.push(new Enemy(randomXLoc, rowNum, randomSpeed));
         }
     }

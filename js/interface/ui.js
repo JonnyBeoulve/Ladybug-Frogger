@@ -1,4 +1,11 @@
 /*=======================================================================
+// The modal div will be used to display windows in the center of the
+// game field.
+=======================================================================*/
+let modalDiv = document.getElementById('modal');
+modalDiv.style.display = 'none';
+
+/*=======================================================================
 // The alert div will be used to display text at the center of the
 // screen to alert the user to an event. It will disappear after one
 // half of a second.
@@ -13,7 +20,7 @@ alertText = (text) => {
     alertDiv.appendChild(temporaryAlert);
 
     setTimeout(
-        function() {
+        () => {
             alertDiv.style.display = 'none';
             alertDiv.removeChild(alertDiv.firstChild);
         }, 500
@@ -26,7 +33,7 @@ alertText = (text) => {
 =======================================================================*/
 let easier = document.getElementsByClassName("menu-easier")[0];
 easier.style.display = 'none';
-easier.addEventListener("click", function(e) {
+easier.addEventListener("click", (e) => {
     if (allEnemies.length === 3 ) {
         alertText("Minimum enemies reached!")
     } else if (allEnemies.length === 6) {
@@ -39,7 +46,7 @@ easier.addEventListener("click", function(e) {
         spawnEnemies(3);
         alertText("Hard difficulty initiated.");
     } else {
-        console.log("Range error occurred during enemy removal.");
+        console.log("Range error occurred during Easier event listener in ui.js.");
     }
 })
 
@@ -49,7 +56,7 @@ easier.addEventListener("click", function(e) {
 =======================================================================*/
 let harder = document.getElementsByClassName("menu-harder")[0];
 harder.style.display = 'none';
-harder.addEventListener("click", function(e) {
+harder.addEventListener("click", (e) => {
     if (allEnemies.length === 3 ) {
         spawnEnemies(2); 
         alertText("Normal difficulty initiated.")
@@ -62,7 +69,7 @@ harder.addEventListener("click", function(e) {
     } else if (allEnemies.length === 12) {
         alertText("Maximum enemies reached!")
     } else {
-        console.log("Range error occurred during enemy addition.");
+        console.log("Range error occurred during Harder event listener in ui.js.");
     }
 })
 
@@ -71,8 +78,9 @@ harder.addEventListener("click", function(e) {
 =======================================================================*/
 let reset = document.getElementsByClassName("menu-reset")[0];
 reset.style.display = 'none';
-reset.addEventListener("click", function(e) {
+reset.addEventListener("click", (e) => {
     stats.newGame('reset');
+    alertText("Game restarted.")
 })
 
 /*=======================================================================
@@ -81,7 +89,7 @@ reset.addEventListener("click", function(e) {
 =======================================================================*/
 let info = document.getElementsByClassName("menu-info")[0];
 info.style.display = 'none';
-info.addEventListener("click", function(e) {
+info.addEventListener("click", (e) => {
 
     /*=======================================================================
     // Clear modal before adding info text.
