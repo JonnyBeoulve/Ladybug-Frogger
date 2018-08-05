@@ -17,8 +17,4 @@ In the future the following will be added for this project:
 * Refactoring.
 * Sprite conversion from fantasy to sci-fi.
 
-<<<<<<< HEAD
 I originally built this game using JavaScript ES5 syntax, but have since updated it with ES6 classes, arrow functions, declarations, and more.
-=======
-This game was originally built using JavaScript ES5 syntax, and I have since updated it with ES6 classes, arrow functions, declarations, and more.
->>>>>>> 0e0712ba3c7209ce7b06dfd0fc46b0aeb1a0ba1c
