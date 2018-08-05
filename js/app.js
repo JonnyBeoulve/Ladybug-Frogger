@@ -203,7 +203,7 @@ class Stats {
         this.render();
     
         allEnemies = [];
-        spawnEnemies();
+        spawnEnemies(2);
     
         allRocks = [];
         spawnRocks();
@@ -286,7 +286,7 @@ class Stats {
     
         allRocks = [];
         spawnRocks();
-        spawnEnemies();
+        spawnEnemies(2);
     
         if (this.firstStart === true) {
             countdownTimer();
@@ -326,34 +326,25 @@ introduction = () => {
 }
 
 /*=======================================================================
-// Two Enemies will be instantiated per row. Each row has a randomized
-// speed for its Enemies, although all Enemies sharing a row move at
-// the same speed (for a better game experience).
+// Enemies will be instantiated within each row depending upon the passed
+// in argument numOfEnemies. Each row has a randomized speed for its
+//  Enemies, although all Enemies sharing a row move at the same speed 
+// (for a better game experience).
 =======================================================================*/
-spawnEnemies = () => {
+spawnEnemies = (numOfEnemies) => {
     allEnemies = [];
-    
-    for (let i = 0; i < 3; i++) {
-        if (i === 0) {
-            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (let k = 0; k < 2; k++) {
-                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                    allEnemies.push(new Enemy(randomXLoc, 1, randomSpeed));
-                }
-        } else if (i === 1) {
-            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (let k = 0; k < 2; k++) {
-                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                    allEnemies.push(new Enemy(randomXLoc, 2, randomSpeed));
-                }
-        } else if (i === 2) {
-            let randomSpeed = Math.floor(Math.random() * (150)) + 120;
-                for (let k = 0; k < 2; k++) {
-                    let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-                    allEnemies.push(new Enemy(randomXLoc, 3, randomSpeed));
-                }
+
+    spawnEnemyRow = (rowNum, numEnemies) => {
+        let randomSpeed = Math.floor(Math.random() * (150)) + 200;
+        for (let k = 0; k < numEnemies; k++) {
+            let randomXLoc = Math.floor(Math.random() * (800)) + 1;
+            allEnemies.push(new Enemy(randomXLoc, rowNum, randomSpeed));
         }
     }
+
+    spawnEnemyRow(1, numOfEnemies);
+    spawnEnemyRow(2, numOfEnemies);
+    spawnEnemyRow(3, numOfEnemies);
 }
 
 /*=======================================================================

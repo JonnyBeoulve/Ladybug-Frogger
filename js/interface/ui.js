@@ -27,11 +27,19 @@ alertText = (text) => {
 let easier = document.getElementsByClassName("menu-easier")[0];
 easier.style.display = 'none';
 easier.addEventListener("click", function(e) {
-    if (allEnemies.length > 5) {
-        allEnemies.splice(allEnemies.length - 1);
-        alertText("Removed one enemy!");
+    if (allEnemies.length === 3 ) {
+        alertText("Minimum enemies reached!")
+    } else if (allEnemies.length === 6) {
+        spawnEnemies(1); 
+        alertText("Easy difficulty initiated.");
+    } else if (allEnemies.length === 9) {
+        spawnEnemies(2);
+        alertText("Normal difficulty initiated.");
+    } else if (allEnemies.length === 12) {
+        spawnEnemies(3);
+        alertText("Hard difficulty initiated.");
     } else {
-        alertText("Can't remove an enemy!");
+        console.log("Range error occurred during enemy removal.");
     }
 })
 
@@ -42,14 +50,19 @@ easier.addEventListener("click", function(e) {
 let harder = document.getElementsByClassName("menu-harder")[0];
 harder.style.display = 'none';
 harder.addEventListener("click", function(e) {
-    if (allEnemies.length < 15) {
-        let randomXLoc = Math.floor(Math.random() * (1000)) + 1;
-        let randomRowLoc = Math.floor(Math.random() * (3)) + 1;
-        let randomSpeed = Math.floor(Math.random() * (150)) + 100;
-        allEnemies.push(new Enemy(randomXLoc, randomRowLoc, randomSpeed));
-        alertText("Added one enemy!");
+    if (allEnemies.length === 3 ) {
+        spawnEnemies(2); 
+        alertText("Normal difficulty initiated.")
+    } else if (allEnemies.length === 6) {
+        spawnEnemies(3); 
+        alertText("Hard difficulty initiated.");
+    } else if (allEnemies.length === 9) {
+        spawnEnemies(4); 
+        alertText("Insane difficulty initiated.")
+    } else if (allEnemies.length === 12) {
+        alertText("Maximum enemies reached!")
     } else {
-        alertText("Can't add an enemy!");
+        console.log("Range error occurred during enemy addition.");
     }
 })
 
@@ -129,7 +142,7 @@ info.addEventListener("click", function(e) {
 /* ================================================================
 // This function closes the Info modal.
 ================================================================ */
-function closeModal() {
+closeModal = () => {
     modalDiv.style.display = 'none';
   
     while(modalDiv.firstChild) {
