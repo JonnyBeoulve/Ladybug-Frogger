@@ -1,6 +1,6 @@
 /*=======================================================================
-// An input listener binds the arrow keys on the keyboard to
-// move the Player character.
+// An input listener binds the arrow keys on the keyboard to move the 
+// Player character. Tapping C will change the sprite.
 =======================================================================*/
 document.addEventListener('keyup', function(e) {
     let allowedKeys = {
@@ -15,7 +15,9 @@ document.addEventListener('keyup', function(e) {
 });
 
 /*=======================================================================
-// The enemy object.
+// The enemy object. The constructor will determine the x and y location
+// in addition to movement speed. The enemy will be portrayed as a
+// ladybug moving left to right.
 =======================================================================*/
 class Enemy {
     constructor(xLoc, rowLoc, speed) {
@@ -24,74 +26,70 @@ class Enemy {
         this.speed = speed / 2;
         this.sprite = 'images/enemy-bug.png';
     }
-};
 
-/*=======================================================================
-// This function updates the location of the Enemy characters and checks
-// if the Player collides with an Enemy. Note that dt is a time delta 
-// between ticks. If the enemy reaches the far right of the grid it will
-// be moved to the far left (x axis).
-=======================================================================*/
-Enemy.prototype.update = function(dt) {
-    this.x = this.x + this.speed * dt;
+    /*=======================================================================
+    // This function updates the location of the Enemy characters and checks
+    // if the Player collides with an Enemy. Note that dt is the time delta 
+    // between ticks. If the enemy reaches the far right of the grid it will
+    // be moved to the far left (x axis).
+    =======================================================================*/
+    update(dt) {
+        this.x = this.x + this.speed * dt;
 
-    if (Math.abs(this.x - player.x) < 60) {
-        if (this.y === player.y) player.death();
+        if (Math.abs(this.x - player.x) < 60) {
+            if (this.y === player.y) player.death();
+        }
+    
+        if (this.x > 500) this.x = -100;
     }
-
-    if (this.x > 500) this.x = -100;
+    /*=======================================================================
+    // This function will render the Enemies on the screen.
+    =======================================================================*/
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 };
 
 /*=======================================================================
-// This function will render the Enemies on the screen.
-=======================================================================*/
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-/*=======================================================================
-// The Player object.
+// The Player object. The contructor will continually house the x and
+// y location of the Player as well as a sprite index that dictates
+// which sprite the character is represented by. This can be changed by
+// the Player by pressing C.
 =======================================================================*/
 class Player {
     constructor() {
         this.x = 200;
         this.y = 380;
         this.spriteIndex = 0;
+        this.SPRITE_FILES = [
+            'images/char-boy.png',
+            'images/char-cat-girl.png',
+            'images/char-horn-girl.png',
+            'images/char-pink-girl.png',
+            'images/char-princess-girl.png'
+        ]
         this.sprite = this.SPRITE_FILES[this.spriteIndex];
     }
-}
 
-/*=======================================================================
-// All five usable Player sprites are loaded into an array so the user
-// can switch instantly upon pressing 'c'.
-=======================================================================*/
-Player.prototype.SPRITE_FILES = [
-	'images/char-boy.png',
-	'images/char-cat-girl.png',
-	'images/char-horn-girl.png',
-	'images/char-pink-girl.png',
-	'images/char-princess-girl.png'
-];
+    /*=======================================================================
+    // This function will update the location of the Player character.
+    =======================================================================*/
+    update() {
+        this.x = this.x;
+        this.y = this.y;
+    
+        if (this.y === -20) {
+            stats.score();
+            stats.timer = stats.timer + 3;
+            alertText("You scored!");
+        }
+    }
 
-/*=======================================================================
-// Render the player sprite.
-=======================================================================*/
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
-
-/*=======================================================================
-// Update the location of the player sprite. Render a score if the
-// player reaches water and add 3 seconds to the countdown timer.
-=======================================================================*/
-Player.prototype.update = function() {
-    this.x = this.x;
-    this.y = this.y;
-
-    if (this.y === -20) {
-        stats.score();
-        stats.timer = stats.timer + 3;
-        alertText("You scored!");
+    /*=======================================================================
+    // This function will render the Player on the screen.
+    =======================================================================*/
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
 
