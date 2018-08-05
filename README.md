@@ -7,7 +7,7 @@ Demo: http://www.jonathanleack.com/ladybug-frogger/
 ## Programming
 * HTML
 * CSS
-* JavaScript (ES5)
+* JavaScript (ES6)
 
 ## Note
 The main programming I have contributed can be found in js/app.js.
