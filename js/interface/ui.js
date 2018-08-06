@@ -6,6 +6,20 @@ let modalDiv = document.getElementById('modal');
 modalDiv.style.display = 'none';
 
 /*=======================================================================
+// The best score div will display the high score of the user, stored
+// using local storagte. It will initially not be displayed.
+=======================================================================*/
+let highScoreDiv = document.getElementById('high-score');
+highScoreDiv.style.display = 'none';
+
+/*=======================================================================
+// The countdown div will display the countdown, starting at 30,
+// to the user. It will be hidden until Start New Game is clicked.
+=======================================================================*/
+let countdownDiv = document.getElementById('countdown');
+countdownDiv.style.display = 'none';
+
+/*=======================================================================
 // The alert div will be used to display text at the center of the
 // screen to alert the user to an event. It will disappear after one
 // half of a second.
@@ -156,4 +170,20 @@ closeModal = () => {
     while(modalDiv.firstChild) {
       modalDiv.removeChild(modalDiv.firstChild);
     }
+}
+
+/*=======================================================================
+// Grab high score from local storage if available and display it
+// in the bottom div.
+=======================================================================*/
+displayHighScore = () => {
+    const highScore = localStorage.getItem('HighScore');
+
+    if (highScore) {
+        highScoreDiv.textContent = `Best Score: ${highScore}`;
+    } else {
+        highScoreDiv.textContent = 'Best Score: N/A';
+    }
+
+    highScoreDiv.style.display = '';
 }

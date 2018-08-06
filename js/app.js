@@ -205,7 +205,9 @@ class Stats {
 
     /*=======================================================================
     // An end game screen that functions as both the failure and victory
-    // screen depending on the string passed into the function.
+    // screen depending on the string passed into the function. High
+    // scores are stored in local storage for comparison in future 
+    // completions.
     =======================================================================*/
     endGame(e) {
         // Clear grid.
@@ -229,11 +231,24 @@ class Stats {
         let modalVictoryHeader = document.createElement('h2');
         modalVictoryHeader.classList.add('modal-victory');
 
+        // If player won, grab previous high score from local storage (if available)
+        // and compare to determine if a new high score needs to be stored.
         if (e == 'win') {
+            const prevHighScore = localStorage.getItem('HighScore');
             const finalScore = ((this.lives * 100) + (this.timer * 10));
             modalVictoryHeader.textContent = `You Win! ${finalScore} pts`;
+            highScoreDiv.style.display = 'none';
+
+            // If no previous score has been set, or new score beats old score, set local storage item
+            if (!prevHighScore || (prevHighScore < finalScore)) {
+                localStorage.setItem('HighScore', finalScore);
+                displayHighScore();
+            }
+
         } else if (e == 'gameover') {
             modalVictoryHeader.textContent = 'Game Over';
+            countdownDiv.style.display = 'none';
+            highScoreDiv.style.display = 'none';
         } else if (e == 'intro') {
             modalVictoryHeader.textContent = 'Get Ready';
         }
@@ -270,6 +285,7 @@ class Stats {
         player.y = 380;
         document.getElementById("countdown").style.backgroundColor = "hsla(224, 56%, 52%, 0.945)";
     
+        countdownDiv.style.display = '';
         easier.style.display = '';
         harder.style.display = '';
         reset.style.display = '';
@@ -278,6 +294,7 @@ class Stats {
         allRocks = [];
         spawnRocks();
         spawnEnemies(2);
+        displayHighScore();
     
         if (this.firstStart === true) {
             countdownTimer();
