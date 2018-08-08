@@ -15,7 +15,7 @@
         if(urlOrArr instanceof Array) {
             // If the developer passed in an array of images loop through each value 
             // and call our image loader on that image file
-            urlOrArr.forEach(function(url) {
+            urlOrArr.forEach((url) => {
                 _load(url);
             });
         } else {
@@ -46,7 +46,7 @@
                 // Once the image is actually loaded and properly cached,
                 // call all of the onReady() callbacks we have defined.
                 if(isReady()) {
-                    readyCallbacks.forEach(function(func) { func(); });
+                    readyCallbacks.forEach((func) => { func(); });
                 }
             };
 
