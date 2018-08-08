@@ -2,7 +2,7 @@
 // An input listener binds the arrow keys on the keyboard to move the 
 // Player character. Tapping C will change the sprite.
 =======================================================================*/
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', (e) => {
     let allowedKeys = {
         37: 'left',
         38: 'up',
@@ -211,7 +211,7 @@ class Stats {
     =======================================================================*/
     endGame(e) {
         // Clear grid.
-        allEnemies.forEach(function(e) {
+        allEnemies.forEach((e) => {
             allEnemies.splice(0, allEnemies.length);
         })
 
@@ -378,7 +378,7 @@ spawnRocks = () => {
 countdownTimer = () => {
     document.getElementById("countdown").innerHTML = stats.timer;
 
-    let x = setInterval(function() {
+    let x = setInterval(() => {
         if (stats.timer > 0 && stats.points != 3) {
             stats.timer--;
         } else if (stats.timer === 0 && stats.points != 3) {
