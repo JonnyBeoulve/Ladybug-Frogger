@@ -1,223 +1,228 @@
 /*=======================================================================
 // General styling.
 =======================================================================*/
-@import url('https://fonts.googleapis.com/css?family=Patrick+Hand');
+@import url("https://fonts.googleapis.com/css?family=Patrick+Hand");
 
 body {
-    text-align: center;
-    font-family: 'Patrick Hand', sans-serif;
-    background-color: #fff; 
-    background-image: 
-        linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
-        linear-gradient(#eee .1em, transparent .1em);
-    background-size: 100% 1.2em;
+  text-align: center;
+  font-family: "Patrick Hand", sans-serif;
+  background-color: #fff;
+  background-image: linear-gradient(
+      90deg,
+      transparent 79px,
+      #abced4 79px,
+      #abced4 81px,
+      transparent 81px
+    ),
+    linear-gradient(#eee 0.1em, transparent 0.1em);
+  background-size: 100% 1.2em;
 }
 
 /*=======================================================================
 // Menu button styling.
 =======================================================================*/
 .menu-btn {
-    display: block;
-    position: absolute;
-    top: 594px;
-    text-align: center;
-    margin: 0px auto 0px auto;
-    font-family: 'Patrick Hand', sans-serif;
-    font-size: 1.2em;
-    width: 60px;
-    height: 40px;
-    background: hsla(224, 56%, 52%, 0.945);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 5px;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
-    cursor: pointer;
+  display: block;
+  position: absolute;
+  top: 594px;
+  text-align: center;
+  margin: 0px auto 0px auto;
+  font-family: "Patrick Hand", sans-serif;
+  font-size: 1.2em;
+  width: 60px;
+  height: 40px;
+  background: hsla(224, 56%, 52%, 0.945);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  cursor: pointer;
 }
 
 .menu-btn:hover {
-    background: hsla(224, 59%, 43%, 0.945);
+  background: hsla(224, 59%, 43%, 0.945);
 }
 
 .menu-easier {
-    left: 0px;
-    right: 440px;
+  left: 0px;
+  right: 440px;
 }
 
 .menu-harder {
-    left: 0px;
-    right: 310px;
+  left: 0px;
+  right: 310px;
 }
 
 .menu-reset {
-    left: 310px;
-    right: 0;
+  left: 310px;
+  right: 0;
 }
 
 .menu-info {
-    left: 440px;
-    right: 0;
+  left: 440px;
+  right: 0;
 }
 
 /*=======================================================================
 // High score styling.
 =======================================================================*/
 #high-score {
-    display: block;
-    position: absolute;
-    top: 594px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    margin: 0px auto 0px auto;
-    font-family: 'Patrick Hand', sans-serif;
-    font-size: 1.8em;
-    width: 140px;
-    height: 85px;
-    background: hsla(224, 56%, 52%, 0.945);
-    border: 4px solid hsla(224, 59%, 43%, 0.945);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 5px;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+  display: block;
+  position: absolute;
+  top: 594px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: 0px auto 0px auto;
+  font-family: "Patrick Hand", sans-serif;
+  font-size: 1.8em;
+  width: 140px;
+  height: 85px;
+  background: hsla(224, 56%, 52%, 0.945);
+  border: 4px solid hsla(224, 59%, 43%, 0.945);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 /*=======================================================================
 // Styling for temporary alerts.
 =======================================================================*/
 #alert {
-    margin: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 320px;
-    width: 240px;
-    height: 60px;
-    background: hsla(224, 56%, 52%, 0.945);
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    border-radius: 5px;
-    border: 4px solid white;
-    border-style: ridge;
-    margin-top: 80px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 320px;
+  width: 240px;
+  height: 60px;
+  background: hsla(224, 56%, 52%, 0.945);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  border-radius: 5px;
+  border: 4px solid white;
+  border-style: ridge;
+  margin-top: 80px;
 }
 
 #alert h3 {
-    text-transform: capitalize;
-    color: white;
-    line-height: 10px;
-    font-size: 1.4em;
+  text-transform: capitalize;
+  color: white;
+  line-height: 10px;
+  font-size: 1.4em;
 }
 
 /*=======================================================================
 // Styling for the modal window.
 =======================================================================*/
 #modal {
-    margin: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 60px;
-    width: 320px;
-    height: 330px;
-    background: hsla(224, 56%, 52%, 0.945);
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    border-radius: 5px;
-    border: 4px solid white;
-    margin-top: 80px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 60px;
+  width: 320px;
+  height: 330px;
+  background: hsla(224, 56%, 52%, 0.945);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  border-radius: 5px;
+  border: 4px solid white;
+  margin-top: 80px;
 }
 
 .modal-close {
-    margin-top: 5px;
-    margin-left: 290px;
-    font-size: 1.2em;
-    background: hsla(224, 56%, 52%, 0.945);
-    color: rgb(43, 43, 43);
-    border: none;
+  margin-top: 5px;
+  margin-left: 290px;
+  font-size: 1.2em;
+  background: hsla(224, 56%, 52%, 0.945);
+  color: rgb(43, 43, 43);
+  border: none;
 }
 
 .modal-close:hover {
-    cursor: pointer;
-    color: black;
+  cursor: pointer;
+  color: black;
 }
 
 .modal-victory {
-    text-transform: capitalize;
-    color: white;
-    font-size: 5em;
-    text-align: center;
-    width: 280px;
-    margin: 5px 5px 5px 5px;
-    cursor: default;
+  text-transform: capitalize;
+  color: white;
+  font-size: 5em;
+  text-align: center;
+  width: 280px;
+  margin: 5px 5px 5px 5px;
+  cursor: default;
 }
 
 .modal-new-game {
-    line-height: 20px;
-    margin: 20px;
-    background-color: white;
-    padding: 10px 15px 10px 15px;
-    font-size: 1.3em;
-    font-family: 'Patrick Hand', sans-serif;
-    color: black;
-    border: none;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 5px;
-    cursor: pointer;
+  line-height: 20px;
+  margin: 20px;
+  background-color: white;
+  padding: 10px 15px 10px 15px;
+  font-size: 1.3em;
+  font-family: "Patrick Hand", sans-serif;
+  color: black;
+  border: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .modal-new-game:hover {
-    border-bottom: 4px solid black;
+  border-bottom: 4px solid black;
 }
 
 .modal-header {
-    text-transform: capitalize;
-    color: white;
-    font-size: 1.3em;
-    width: 280px;
-    margin: 5px 5px 5px 5px;
+  text-transform: capitalize;
+  color: white;
+  font-size: 1.3em;
+  width: 280px;
+  margin: 5px 5px 5px 5px;
 }
 
 .modal-text {
-    color: rgb(215, 220, 224);
-    font-size: 1.1em;
-    width: 280px;
-    margin: 5px 5px 5px 5px;
+  color: rgb(215, 220, 224);
+  font-size: 1.1em;
+  width: 280px;
+  margin: 5px 5px 5px 5px;
 }
 
 .no-hover {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .employees-blur {
-    filter: blur(2px);
+  filter: blur(2px);
 }
 
 /*=======================================================================
 // Styling for the countdown timer.
 =======================================================================*/
 #countdown {
-    display: block;
-    position: absolute;
-    top: 15px;
-    left: 0px;
-    right: 0px;
-    text-align: center;
-    margin: 0px auto 0px auto;
-    width: 85px;
-    height: 40px;
-    line-height: 40px;
-    background: hsla(224, 56%, 52%, 0.945);
-    font-size: 1.8em;
-    color: white;
-    border: 4px solid hsla(224, 59%, 43%, 0.945);
-    border-bottom: 0;
-    border-radius: 5px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  margin: 0px auto 0px auto;
+  width: 85px;
+  height: 40px;
+  line-height: 40px;
+  background: hsla(224, 56%, 52%, 0.945);
+  font-size: 1.8em;
+  color: white;
+  border: 4px solid hsla(224, 59%, 43%, 0.945);
+  border-bottom: 0;
+  border-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
